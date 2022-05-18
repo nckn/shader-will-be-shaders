@@ -1,62 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mood room - Exploring Audio visual 3D worlds and type layer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood room - Exploring Audio visual 3D worlds and type layer</title>
 </head>
+
 <body>
-    <canvas class="webgl"></canvas>
-    <div class="loader-overlay">
-      <div class="sound-button">Play</div>
-    </div>
-    
-    <div class="solved-overlay">
-      <h1 class="question-overlay__title">🎉 Captcha solved! 🚀</h1>
-    </div>
+  <canvas id="canvas"></canvas>
 
-    <div class="question-overlay"></div>
+  <p class="collection">
+    <a href="https://codepen.io/collection/AGZywR" target="_blank">WebGL Collection</a>
+  </p>
 
-    <div class="question-explanation">
-      <h1>
-        <span class="q-anim">Creative Captchas is all about</span>
-        <span class="q-anim">taking good old boring</span>
-        <span class="q-anim">captchas and giving them</span>
-        <span class="q-anim">a makeover and greater purpose</span>
-      </h1>
-    </div>
-
-    <div class="nav-item anim--nav-tl">Home</div>
-    <div class="nav-item anim--nav-tr">Projects</div>
-    <div class="nav-item anim--nav-br">Contact</div>
-    <div class="nav-item anim--nav-bl">About</div>
-    
-    <div class="popover">
-      <div class="dot"></div>
-      <div class="annotation">
-        <div class="info-line"></div>
-        <svg viewBox="0 0 200 200" id="theSvgNoiseShape">
-          <defs>
-            <linearGradient id="gradient" gradientTransform="rotate(90)">
-              <stop id="gradientStop1" offset="0%" stop-color="var(--startColor)" />
-              <stop id="gradientStop2 " offset="100%" stop-color="var(--stopColor)" />
-            </linearGradient>
-          </defs>
-          <path id="circlePath" d="" fill="url('#gradient')"></path>
-        </svg>
-        <div class="annotation__textwrapper">
-          <div class="annotation__title">
-            <h3 class="annotation__title__text bold-it anim-type-axis-y anim">Title</h3>
-          </div>
-          <div class="annotation__subtitle">
-            <p class="annotation__subtitle__text anim-type-axis-y anim">Subtitle</p>
-          </div>
-          <div class="annotation__paragraph">
-            <p class="annotation__paragraph__text anim-type-axis-y anim">This is a longer description that is meant to accompany the Title and subtitle</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </body>
+
 </html>
