@@ -265,8 +265,13 @@ const RippleEffect = (function () {
             texture2D(tDiffuse, vUv + dx).r +
             texture2D(tDiffuse, vUv + dy).r
           ) * 0.25;
-          texel.g += (average - texel.r) * 2.0;
-          texel.g *= 0.995;
+          
+          texel.g += (average - texel.r) * 0.05;
+          // texel.g += (average - texel.r) * 2.0;
+          
+          texel.g *= 0.895;
+          // texel.g *= 0.995;
+          
           texel.r += texel.g;
 
           gl_FragColor = texel;
