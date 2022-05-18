@@ -1,0 +1,18 @@
+.debugger {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 11;
+  background: #252525;
+  padding: 8px;
+  font-size: 0.625rem;
+  font-family: sans-serif;
+  .row-debug {
+    .row-debug__title {
+      color: #808080;
+    }
+    .row-debug__label {
+
+    }
+  }
+}
