@@ -20,8 +20,8 @@ import './assets/scss/index.scss'
 function App() {
   const conf = {
     el: 'canvas',
-    fov: 75,
-    cameraZ: 100,
+    fov: 35, // org: 75
+    cameraZ: 100, // org: 100
   };
 
   let renderer, scene, camera, cameraCtrl;
@@ -41,7 +41,7 @@ function App() {
 
   function init() {
 
-    console.log('initing alright')
+    console.log('initing alright _ - - - - - - -  æ æ æ æ æ')
     // const gl = renderer.getContext();
     // const floatTextures = gl.getExtension('OES_texture_float');
     // if (!floatTextures) {
@@ -51,7 +51,7 @@ function App() {
 
     renderer = new THREE.WebGLRenderer({ canvas: document.getElementById(conf.el), antialias: true });
     camera = new THREE.PerspectiveCamera(conf.fov);
-    camera.position.z = conf.cameraZ;
+    // camera.position.z = conf.cameraZ;
 
     updateSize();
     window.addEventListener('resize', updateSize, false);
