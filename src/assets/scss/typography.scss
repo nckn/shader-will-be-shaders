@@ -1,0 +1,126 @@
+// $font_path: '../../../static/fonts/';
+$font_path: '../../fonts/';
+
+// Base
+// @font-face {
+//   font-family: "CambonRegular";
+//   src: url($font_path + 'Cambon-Regular.otf');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+// @font-face {
+//   font-family: "CambonBlack";
+//   src: url($font_path + 'Cambon-Black.otf');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+// @font-face {
+//   font-family: "AktivGroteskBold";
+//   src: url($font_path + 'AktivGroteskCorp-Bold.ttf');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+
+h1, h2, h3, h4, h5, h6, p {
+  letter-spacing: 0.35px;  
+}
+
+h2, h3, h4, h5 {
+  line-height: 140%;
+}
+
+h6, p {
+  line-height: 180%;
+}
+
+h1 {
+  font-size: 2rem;
+  @media screen and (min-width: $breakp-md) {
+    font-size: 4rem;
+  }
+}
+
+h2 {
+  // font-size: 1rem;
+  font-size: 1.125rem;
+  @media screen and (min-width: $breakp-md) {
+    font-size: 2rem;
+    // font-size: 4rem;
+  }
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-family: "CambonBlack", serif;
+}
+
+h4 {
+  font-size: 1.5rem;
+  font-family: "AktivGroteskBold", serif;
+}
+
+p {
+  font-size: 1rem;
+  @media screen and (min-width: $breakp-md) {
+    // font-size: 1.125rem;
+    font-size: 1.125rem;
+  }
+}
+
+.section--one__title span {
+  &:nth-child(-n+5) {
+    font-family: "CambonBlack", serif;
+  }
+}
+
+.text-bold {
+  font-family: "CambonBlack", serif;
+}
+
+blockquote {
+  // font-size: 2rem;
+  font-size: 1.5rem;
+  line-height: 150%;
+  font-family: "CambonBlack", serif;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  &:before, &:after {
+    content: '';
+    position: absolute;
+  }
+  &:before {
+    content: '“';
+    // left: -24px;
+    top: -2.5rem;
+    font-size: 4rem;
+  }
+  span {
+    color: $color-grey-dark;
+    font-family: 'AktivGroteskBold', sans-serif;
+    font-size: 1.5rem;
+  }
+  // &:after {
+  //   content: '”';
+  //   bottom: 0;
+  //   right: -24px;
+  // }
+}
+
+// Img caption text
+figcaption {
+  line-height: 140%;
+  // font-size: 0.875rem; // 14px
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+  color: $color-grey-95;
+  span {
+    color: #f2f2f2;
+  }
+}
+
+.media-announcer {
+  margin-bottom: 2rem;
+}
