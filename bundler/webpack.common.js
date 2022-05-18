@@ -20,8 +20,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../src/index.html'),
-            minify: true,
-            hash: false,
+            minify: true
         }),
         new MiniCSSExtractPlugin()
     ],
@@ -32,7 +31,7 @@ module.exports = {
             // HTML
             {
                 test: /\.(html)$/,
-                use: ['html-loader'],
+                use: ['html-loader']
             },
 
             // JS
@@ -56,20 +55,19 @@ module.exports = {
             },
 
             // Images
-            // {
-            //     test: /\.(jpg|png|gif|svg)$/,
-            //     use:
-            //     [
-            //         {
-            //             loader: 'file-loader',
-            //             options:
-            //             {
-            //                 outputPath: 'assets/images/',
-            //                 name: '[name].[ext]'
-            //             }
-            //         }
-            //     ]
-            // },
+            {
+                test: /\.(jpg|png|gif|svg)$/,
+                use:
+                [
+                    {
+                        loader: 'file-loader',
+                        options:
+                        {
+                            outputPath: 'assets/images/'
+                        }
+                    }
+                ]
+            },
 
             // Fonts
             {

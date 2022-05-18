@@ -1,4 +1,4 @@
-// import SimplexNoise from 'simplex-noise'
+import SimplexNoise from 'simplex-noise'
 
 const radians = (degrees) => {
   return degrees * Math.PI / 180;
@@ -64,10 +64,10 @@ const createPoints = () => {
 }
 
 // Noise
-// const simplex = new SimplexNoise();
-// const noise = (x, y) => {
-//   return simplex.noise2D(x, y);
-// }
+const simplex = new SimplexNoise();
+const noise = (x, y) => {
+  return simplex.noise2D(x, y);
+}
 
 export { 
   radians,
@@ -76,5 +76,5 @@ export {
   generateRandomNumber,
   checkIfTouch,
   createPoints,
-  // noise
+  noise
 };

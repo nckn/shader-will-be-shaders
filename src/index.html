@@ -3,371 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web template - basic</title>
+    <title>Mood room - Exploring Audio visual 3D worlds and type layer</title>
 </head>
-<body style="opacity:0;background:#000;">
-
-  <!-- Debugger - start -->
-  <!-- <div class="debugger">
-    <div class="row-debug">
-      <label class="row-debug__title">sec--four height</label>
-      <label class="row-debug__value" id="sec4Height">--</label>
-    </div>
-  </div> -->
-  <!-- Debugger - end -->
-
-  <!-- Quotes container - start -->
-  <div class="container--outer container--outer--blockquotes">
-    <div class="container--inner container--inner--blockquotes">
-      <!-- Quote 1 ” -->
-      <blockquote class="block-quote block-quote--first" data-index="0">Det er en svær erkendelse, at jeg langsomt forsvinder, bliver en anden, bliver væk, det ønsker jeg ikke for nogen.<span>Morten Bundgård</span></blockquote>
-      <!-- Quote 2 -->
-      <blockquote class="block-quote block-quote--second" data-index="1">Det var meget voldsomt, og jeg fortrød med det samme, at jeg havde ønsket, han fejlede noget. De ord gad jeg godt, jeg kunne tage tilbage. Det var ikke fair, men jeg var så drænet. Men pludselig begyndte alle bekymringerne i stedet for.<span>Hanne Bundgård</span></blockquote>
-      <!-- Quote 3 -->
-      <blockquote class="block-quote block-quote--third" data-index="2">Jeg vil også rigtig gerne have nogle at snakke med på min egen alder, vi har en anden problematik over at forsvinde så tidligt fra vores liv, og det vi ellers havde tænkt os med det. Det tror jeg på, så jeg gad godt, der var hjælp til os.<span>Morten Bundgård</span></blockquote>
-    </div>
-  </div>
-  <!-- Quotes container - end -->
-
-  <div class="scroll-master" asscroll-container=''>
-    
-    <div class="scroll-wrap">
-      <div class="scroll-length">
-      </div>
-    </div>
-
-    <div class="scroll-teaser">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 15L12 22M12 22L19 15M12 22V3" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M5 15L12 22M12 22L19 15M12 22V3" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>        
-    </div>
-
-    <div class="section section--one">
-      <div class="container--outer">
-        <div class="container--inner">
-          
-          <!-- One line -->
-          <h1 class="section--one__title">Ramt af alzheimers i 50`erne</h1>
-          <h1 class="section--one__subtitle">Morten er på vej væk fra vores verden</h1>
-
-          <!-- Two lines -->
-          <!-- <h1 class="section--one__title">Ramt af alzheimers i 50`erne</h1>
-          <h1 class="section--one__subtitle">Morten er på vej væk fra vores verden</h1> -->
-          
-          <!-- <img src="<%=require('./assets/images/image010.jpg')%>"> -->
-          <!-- <img src="./assets/images/image010.jpg" alt="Morten artikelbillede"> -->
-          
-          <!-- <img class="section__image section--one__image" src="./assets/images/image010.jpg" alt="Morten artikelbillede"> -->
-          <!-- <div class="section__image-elem section--one__image-elem"></div> -->
-          
-          <svg class="section__image section--one__image" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
-            <defs>
-              <filter id="featherFilter">
-                <feGaussianBlur id="feGaussianBlur" stdDeviation="40" />
-              </filter>
-              <mask id="mask">
-                <ellipse cx="50%" cy="50%" rx="35%" ry="30%" fill="white" filter="url(#featherFilter)"></ellipse>
-              </mask>
-            </defs>
-          
-            <image class="imgggg" xlink:href="./assets/images/image010.jpg" width="200" height="200" mask="url(#mask)"></image>
-          </svg>
-          <!-- <div class="section--one__image__wrapper">
-          </div> -->
-
-        </div>
-      </div>
+<body>
+    <canvas class="webgl"></canvas>
+    <div class="loader-overlay">
+      <div class="sound-button">Play</div>
     </div>
     
-    <!-- section two - start -->
-    <div class="section section--two">
-      <div class="container--outer">
-        <div class="container--inner">
-          <h2>Morten Bundgård er kun 57 år, men alligevel syg med alzheimers sygdom. Han kan stadig være alene hjemme, men spørgsmålet er, hvor længe. Han ønsker, at der var nogle tilbud til demenssyge i samme situation, for det er absolut ikke nemt kun at være i 50´erne med den sygdom, mens tilbuddene er tilegnet ældre. Tilbuddene er der ikke noget galt med, understreger Morten, han er bare for ung og i en anden målgruppe. Dog understreger Morten Bundgård, at lægen og kommunens demenskoordinator har været en stor støtte i hele forløbet.</h2>
-        </div>
-      </div>
+    <div class="solved-overlay">
+      <h1 class="question-overlay__title">🎉 Captcha solved! 🚀</h1>
     </div>
-    <!-- section two - end -->
+
+    <div class="question-overlay"></div>
+
+    <div class="question-explanation">
+      <h1>
+        <span class="q-anim">Creative Captchas is all about</span>
+        <span class="q-anim">taking good old boring</span>
+        <span class="q-anim">captchas and giving them</span>
+        <span class="q-anim">a makeover and greater purpose</span>
+      </h1>
+    </div>
+
+    <div class="nav-item anim--nav-tl">Home</div>
+    <div class="nav-item anim--nav-tr">Projects</div>
+    <div class="nav-item anim--nav-br">Contact</div>
+    <div class="nav-item anim--nav-bl">About</div>
     
-    <!-- section three - start -->
-    <div class="section section--three">
-      <div class="container--outer">
-        <div class="container--inner">
-
-          <!-- <div class="journalist-info">
-            <div class="journalist-info__image" style="background:url(./assets/images/sanne.jpg);"></div>
-            <div class="journalist-info__text">
-              <label class="journalist-info__text__email">@Sanne Helene Højbjerg</label>
-              <label class="journalist-info__text__jobtitle">Journalist</label>
-            </div>
-          </div> -->
-
-          <p>
-            Det er det lille ord endnu, som gør den store forskel i Morten Bundgårds verden, i hans liv, hverdagen og i den fremtid, han er givet.<br><br>
-
-            For 57-årige Morten Bundgård fra Silkeborg har alzheimers sygdom, der er en afart af demens. Og langsomt fjerner sygdommen ham fra virkeligheden, fra sine kære og alt det, han endnu kan.<br><br>
-            
-            Dette er fortællingen om Morten Bundgård.<br><br>
-            
-            - Måske spørger du, hvorfor jeg gerne vil stille mig frem og fortælle om den her forfærdelige sygdom til alle, der vil lytte? Det kan jeg nemt svare på. Det vil jeg, fordi jeg håber, jeg kan hjælpe andre, som får sygdommen i en så tidlig alder som mig, siger Morten Bundgård.<br><br>
-            
-            Vi sidder ved spisebordet på Grøndalsvej. Her har Morten Bundgård boet sammen med sin hustru, Hanne Bundgård, siden deres datter kun var et år gammel. Nu er hun 27. Sammen har de også Annas storebror, Rasmus, på 31 år. De bor henholdsvis i Viborg og Aarhus med gode uddannelser. Alligevel er det altid den nærmeste familie, der giver Morten Bundgård en klump i halsen, når han tænker på den situation, han er havnet i.<br><br>
-            
-            - Børnene skal selvfølgelig nok klare sig. Også selvom det er hårdt for dem med en syg far. Jeg vil godt indrømme, at det, jeg har det allersværest med, det er, at min familie skal tage sig af mig. Til den tid ved jeg det ikke. Men det er tungt at bære for mig, at de skal igennem sådan en svær fremtid, siger Morten Bundgård.<br><br>
-            
-            Som Morten Bundgård sidder og taler, er det slet ikke til at forstå, at her er en mand, der er alvorligt syg. At han er på vej til at forsvinde fra vores verden, sine kære - og i høj grad også for sig selv.<br><br>
-            
-          </p>
-          
-          <div class="image-pair">
-            <img class="section__image section--three__image image-pair__image image-bottom" src="./assets/images/morten-stairs.jpg" alt="Morten artikelbillede">
-            <img class="section__image section--three__image image-pair__image image-top" src="./assets/images/morten-stairs-blur.jpg" alt="Morten artikelbillede">
+    <div class="popover">
+      <div class="dot"></div>
+      <div class="annotation">
+        <div class="info-line"></div>
+        <svg viewBox="0 0 200 200" id="theSvgNoiseShape">
+          <defs>
+            <linearGradient id="gradient" gradientTransform="rotate(90)">
+              <stop id="gradientStop1" offset="0%" stop-color="var(--startColor)" />
+              <stop id="gradientStop2 " offset="100%" stop-color="var(--stopColor)" />
+            </linearGradient>
+          </defs>
+          <path id="circlePath" d="" fill="url('#gradient')"></path>
+        </svg>
+        <div class="annotation__textwrapper">
+          <div class="annotation__title">
+            <h3 class="annotation__title__text bold-it anim-type-axis-y anim">Title</h3>
+          </div>
+          <div class="annotation__subtitle">
+            <p class="annotation__subtitle__text anim-type-axis-y anim">Subtitle</p>
+          </div>
+          <div class="annotation__paragraph">
+            <p class="annotation__paragraph__text anim-type-axis-y anim">This is a longer description that is meant to accompany the Title and subtitle</p>
           </div>
         </div>
       </div>
     </div>
-    <!-- section three - end -->
-    
-    <!-- section four - start -->
-    <div class="section section--four">
-      <div class="container--outer">
-        <div class="container--inner">
-          <p>
-            For at vende tilbage til artiklens begyndelse, er der nemlig meget Morten Bundgård kan. Endnu. Han går lange ture hver eneste dag - gerne med naboens hund, Morten kan af og til også slå græsset i haven, han kan selv lave morgenmad - pyt med at rundstykket bliver skåret over på den forkerte led eller får smør på birkesene i stedet for.<br><br>
-
-            Det er lige meget i den store helhed, hvor det at sørge for sig selv, kaffen og meget mere, det betyder det hele. Det, der derfor er så specielt ved samtalen er, at Morten Bundgård ved, at det snart kan være slut med alle de almindeligheder, vi andre tager for givet.<br><br>
-            
-            - Jeg vil gøre alt, hvad jeg kan for at holde mig i gang, jeg vil ikke kun sidde og sygne hen ved fjernsynet. Men jeg ved også, at jeg ikke er stærkere end sygdommen, og det er en svær erkendelse, at jeg langsomt forsvinder, bliver en anden, bliver væk, det ønsker jeg ikke for nogen, siger Morten Bundgård.<br><br>
-          </p>
-          
-          <div class="block-quote__trigger block-quote__trigger--first" data-trigger-index="0"></div>
-          <!-- <blockquote class="block-quote block-quote--first">Det er en svær erkendelse, at jeg langsomt forsvinder, bliver en anden, bliver væk, det ønsker jeg ikke for nogen. ”<span>Morten Bundgård</span></blockquote> -->
-
-          <p> 
-            Morten Bundgårds hustru, Hanne Bundgård, er også med ved spisebordet for at deltage i samtalen om Mortens demenssygdom og deres liv nu og før. Men det er kun Morten Bundgårds valg, at han vil stå frem med sin historie, og den beslutning bakker hun ham op i.<br><br>
-            
-            - Morten ved stadig, hvad han vil og ikke vil. Det skal han have lov til. Og når han gerne vil fortælle for blandt andet at få fokus på, at der mangler tilbud til jævnaldrende som ham, står jeg selvfølgelig bag ham, siger Hanne Bundgård.<br><br>
-
-            <h3 class="media-announcer">Morten Bundgård vil gerne gøre alt det, han stadig kan. Se ham fortælle i videoen:</h3>
-
-            <!-- https://player.vimeo.com/video/636456920?h=ea60853725&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479 -->
-            <div class="vimeo-embed" style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/471296578?title=0&byline=0&portrait=0&controls=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Lego Education r2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-            
-          </p>
-          
-          <h4>Kunne ikke parkere</h4>
-          
-          <p>
-            Hvilke tilbud som Morten Bundgård drømmer om og hvorfor, det vender vi tilbage til. Først skal man forstå, hvad det er, der er på spil i hjemmet på Grøndalsvej, hvor 57-årige Morten Bundgård kan sidde helt roligt og fortælle om sin sygdom, så man næsten ikke fatter, at den findes i stuen. Men at man derimod tydeligt kan se, at noget er galt, når han rejser sig op og vil forsøge at knappe en knap eller tegne en urskive på et stykke hvidt papir. Det kan han nemlig ikke længere, her er håbet og det lille, betydelige ord endnu ikke længere gældende. Og vil aldrig blive det igen.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-1.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption><span>De her stole er »deres sted«.</span> Her elsker Hanne og Morten Bundgård at sidde og snakke. Hver dag efter arbejde satte de sig altid der, og de sidder der stadig ofte, når Hanne kommer hjem. Morten kan rigtig godt lide at forkæle sin Hanne, hun får ofte mad på sengen om morgenen eller frugt skåret i stykker. Men efterhånden er det ikke helt som det plejer, et rundstykke kan blive skåret over på den »forkerte led« og få smør ovenpå birkesene. Demenssygdommen gør helt almindelige ting helt anderledes. Foto: Jakob Stigsen Andersen.</figcaption>
-          </figure>
-
-          <p>
-            - Det jeg fortryder allermest, det er, at jeg til sidst var så frustreret, at jeg sagde til Morten, at jeg ønskede, han fejlede noget. Ellers ville jeg skilles. Det var inden, vi anede, at man overhovedet kunne få den her skrækkelige sygdom i 50´erne, vi har aldrig kendt nogen med sygdommen, siger Hanne Bundgård.<br><br>
-
-            For at forstå, hvorfor Hanne Bundgård sagde sådan til sin mand, som hun i år ellers kan fejre sølvbryllup med, og som hun har boet med i 34 år, skal man forsøge at sætte sig ind i, hvad der var, der skete for nogle år siden, da Morten Bundgård begyndte at vise der første tegn på alzheimers sygdom. Det hjælper Hanne Bundgårds ord med.<br><br>
-
-            - Jeg var sikker på, at Morten var begyndt at drikke, og at han skjulte det for mig. Jeg var frustreret, jeg var ked af det, og jeg var vred. Det var vi sådan set begge to. Han sad herinde i stuen og var træt af, når han kunne høre, at nu kom jeg hjem fra arbejde. Og jeg sad ude i bilen og havde ikke lyst til at gå ind til ham. Det var kørt helt skævt, siger Hanne Bundgård og fortsætter:<br><br>
-
-            - Jeg mistænkte, at han drak, fordi han ændrede både adfærd, personlighed og fik problemer med balancen. Jeg havde så meget brug for en forklaring, for jeg forstod slet ikke, hvad der skete. Det var en hård tid for os begge, da vi ikke vidste, at Morten var syg. Vi har altid elsket hinandens selskab og prioriteret det enormt højt, så det var en ny situation, som skræmte os begge meget.
-          </p>
-
-          <audio class="audio-wrapper" src="../static/sound/backtrack_roomtone_01.mp3" controls></audio>
-
-          <h4>Troede han skjulte noget</h4>
-
-          <p>
-            Det begyndte for alvor i 2017. Men ikke på den sædvanlige måde, man forbinder med demenssygdom, hvor Morten Bundgård ikke længere kunne huske ting. Men alligevel kunne Hanne Bundgård begynde at mærke forandring, som ingen andre kunne forstå med det første.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-2.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Morten Bundgård vil gerne gøre det, han kan.</span> At tømme opvaskemaskinen er en af dem. Men de fine glas kommer ikke i, for der knuser et par stykker ofte. Glas har han det i det hele taget svært ved, og dem sætter han flere steder i huset, da han aldrig kan huske, hvor de skal hen. Foto: Jakob Stigsen Andersen.
-            </figcaption>
-          </figure>
-
-          <p>
-            Et eksempel kunne være, at Morten, der ellers altid har elsket at køre bil, ikke længere kunne finde ud at parkere. Hvis der var flere ledige båse med hvide striber imellem, parkerede Morten Bundgård lige midt ovenpå stregen. Han kunne simpelthen ikke få bilen på plads. Han begyndte også at løfte benene mærkeligt, når han skulle gå gennem en fodgængerovergang eller på trapper. Han kunne heller ikke finde de samme veje, han havde kørt så mange gange før, og han fik mere hang til en stor fadøl, når de var på ferie. Det var det, der gjorde, at Hanne Bundgård begyndte at mistænke et skjult alkoholforbrug. Morten Bundgård har altid rejst meget via sit arbejde som konsulent og sælger i vindindustrien hos Hydratech Industries i Silkeborg.<br><br>
-
-            - Jeg begyndte at tænke, at han nok drak meget, når han rejste. Jeg hørte ikke noget fra hans arbejde, der altid har behandlet Morten meget anstændigt og støttende gennem hele det her sygdomsforløb. Men jeg var oprigtigt bekymret, men egentlig mest irriteret i begyndelsen, siger Hanne Bundgård og fortsætter:<br>
-            - Da vi var på ferie hos nogle venner sydpå 2018, blev det meget tydeligt, at der var noget galt, som slet ikke handlede om alkohol. Og jeg begyndte nu at blive mere bekymret end vred.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-3.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Alt tøj skal nøje udvælges,</span> for det er slet ikke alle lynlåse, som Morten Bundgård kan lyne. Knapper har han for længst droppet. Af en eller anden grund er det umuligt for ham at knappe en knap nu. Foto: Jakob Stigsen Andersen
-            </figcaption>
-          </figure>
-
-          <p>
-            Da de kom hjem, tog Morten Bundgård til lægen for første gang. Og kom glad hjem uden nogen diagnoser. Men derefter krævede Hanne Bundgård at tage med sin mand derop igen, selvom Morten ikke var glad for det krav. Og da Hanne Bundgård fortalte lægen, at Morten Bundgård havde svært ved at parkere, at holde orden derhjemme i sit værksted og alt det andet, der var anderledes med ham, så henviste han Morten Bundgård til en kræftpakke. Mistanken var en svulst i hjernen.<br><br>
-
-            - Det var meget voldsomt, og jeg fortrød med det samme, at jeg havde ønsket, han fejlede noget. De ord gad jeg godt, jeg kunne tage tilbage. Det var ikke fair, men jeg var så drænet. Men pludselig begyndte alle bekymringerne i stedet for, siger Hanne Bundgård.<br><br>
-          </p>
-
-          <div class="block-quote__trigger block-quote__trigger--second" data-trigger-index="1"></div>
-          <!-- <blockquote class="block-quote block-quote--second" data-index="1">Det var meget voldsomt, og jeg fortrød med det samme, at jeg havde ønsket, han fejlede noget. De ord gad jeg godt, jeg kunne tage tilbage. Det var ikke fair, men jeg var så drænet. Men pludselig begyndte alle bekymringerne i stedet for”<span>Hanne Bundgård</span></blockquote> -->
-
-          <h4>Kunne ikke tegne et ur</h4>
-
-          <p>
-            Det viste sig dog, at Morten Bundgård ikke havde kræft. I stedet for ventede flere undersøgelser og derefter begyndte mistanken om en begyndende demenssygdom.<br><br>
-
-            - Jeg husker, da vi sad til den undersøgelse, hvor du skulle tegne en urskive, Morten. Det var helt forfærdeligt. Der var ikke plads til alle tal i skiven, og viserne sad helt oppe øverst, på skivens kant begge to, selvom du skulle tegne klokken til ti minutter i to. Da hun spurgte, om du var tilfreds med tegningen, svarede du bare ja, og jeg tænkte, at det simpelthen ikke kunne passe, siger Hanne Bundgård og fortsætter:<br><br>
-
-            - Morten er uddannet teknisk tegner, og han kunne heller ikke tegne en firkant. Videnspørgsmål kunne han godt svare på, men evnerne til at få det, der var inde i hovedet ned på en tegning, den var forsvundet fuldstændigt. Det var så chokerende.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-4.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Hanne og Morten Bundgård har altid elsket at spille sammen, </span> men det er blevet vanskeligere nu med Mortens alzheimers sygdom. Et af favoritspillene er yatzy. Raslebægeret har de haft i 34 år, for så længe har parret boet sammen. I år kan de fejre sølvbryllup. Foto: Jakob Stigsen Andersen
-
-            </figcaption>
-          </figure>
-
-          <p>
-            Parret fik i efteråret 2018 svar på, at Morten Bundgård har alzheimers sygdom. Der gik lidt, før Morten tog mod til sig og fortalte det til omverdenen. Først skulle han selv forsøge at kapere det.<br><br>
-
-            - Det er enormt ensomt at få sådan en diagnose. Og det er stadig svært at fatte, at det er det, jeg fejler nu som kun 57-årig. Det er også svært at forstå, at min korttidshukommelse er ved at svigte mig. Og at det jeg har indeni mig, det ikke kan komme ud gennem fingrene og ned på papiret længere - som eksempelvis en simpel urskive. Jeg har mistet overblikket på en måde, den logiske sans er væk, kroppen lystrer ikke, siger Morten Bundgård.<br><br>
-
-            I foråret i år stoppede Morten Bundgård med at arbejde, hvilket efterhånden var på høje tid, da han ikke længere kunne udføre sine opgaver, men også sov konstant efter arbejdstid. Nu venter parret på, at førtidspensionen falder på plads, og det har været et hårdt forløb for Morten, der egentlig hader at sidde og fortælle om sin sygdom og alt det, han ikke kan og har mistet evnen til allerede. Hanne Bundgård er sygeplejerske, og hun arbejder stadig. Og det vil hun blive ved med.<br><br>
-
-            - Morten og jeg kan ikke holde ud at gå op ad hinanden hele tiden, jeg er kun 55 år og har brug for at komme ud. Men det gør det svært at have en syg mand, når man stadig er på arbejdsmarkedet. Jeg har ikke tid til at tage i pårørendecaféer og den slags, for det er jo i min arbejdstid, siger Hanne Bundgård.<br><br>
-
-            Og så er vi tilbage ved de manglende tilbud, som Morten Bundgård ønsker, der er her i kommunen. For han har prøvet at gå ture fra Indelukket med dem, der ellers har demenssygdomme. Og den oplevelse gjorde ham bare endnu mere ked af det.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-5.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Hver dag går Morten Bundgård en tur </span>- typisk på flere kilometer. Indtil videre går det stort set fint med at finde rundt, men han frygter, når han ikke længere kan det. Kørekortet har Morten Bundgård afleveret for at parkere er umuligt for ham. Foto: Jakob Stigsen Andersen
-            </figcaption>
-          </figure>
-
-          <p>
-            - Jeg er jo alt for ung til det. De er tyve år ældre end mig, jeg har brug for noget andet. Jeg gad godt i svømmehallen, men det kan jeg ikke selv, for er der fire døre, ved jeg ikke, hvilken jeg skal gå ud ad, når jeg ikke er kendt. Og i et fitnesscenter kunne også være godt for mig, men jeg kan ikke selv finde ud af at komme ind i maskinerne nu, siger Morten Bundgård og fortsætter:<br><br>
-
-            - Jeg vil også rigtig gerne have nogle at snakke med på min egen alder, vi har en anden problematik over at forsvinde så tidligt fra vores liv, og det vi ellers havde tænkt os med det. Det tror jeg på, så jeg gad godt, der var hjælp til os.
-          </p>
-
-          <div class="block-quote__trigger block-quote__trigger--third" data-trigger-index="2"></div>
-          <!-- <blockquote class="block-quote block-quote--first">Jeg vil også rigtig gerne have nogle at snakke med på min egen alder, vi har en anden problematik over at forsvinde så tidligt fra vores liv, og det vi ellers havde tænkt os med det. Det tror jeg på, så jeg gad godt, der var hjælp til os.”<span>Morten Bundgård</span></blockquote> -->
-
-          <p>
-            Morten Bundgård fortæller dog, at han har været rigtig glad for den demenskonsulent fra kommunen, der har hjulpet ham og Hanne, men han mangler samvær med ligesindede.<br><br>
-
-            - Jeg ved godt, at jeg om en tid har glemt det samvær, men jeg er alligevel sikker på, at det kan give mig livsglæde. Min krop kan desværre leve i mange år endnu, selvom min hjerne er syg. Det er svært at tænke på, siger Morten Bundgård.<br><br>
-          </p>
-
-          <h4>Usikre på fremtiden</h4>
-
-          <p>
-            Noget af det som Morten og Hanne Bundgård også tænker på, det er, om de skal sælge det store hus og hellere flytte i en lejlighed. For Morten kan ikke længere udføre det praktiske arbejde derhjemme med have og hus. Det kunne være rart med en vicevært.<br><br>
-
-            - Men Morten har stadig en form for indre kort indeni over det her hus, hvor vi har boet i alle de år, og det er svært for ham at tillære sig et nyt, så jeg ved faktisk ikke, om vi bør flytte, siger Hanne Bundgård.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-6.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Når kroppen og hjernen tillader det, </span>så vil Morten Bundgård rigtig gerne slå græsset i haven på Grøndalsvej. Her har han boet i 26 år med sin hustru, Hanne Bundgård. Foto: Jakob Stigsen Andersen
-            </figcaption>
-          </figure>
-
-          <p>
-            I det hele taget er parret usikre på deres fremtid, for ingen kan sige noget præcist om, hvordan og hvornår sygdommen udvikler sig sådan, at Morten Bundgård får brug for intens hjælp og eksempelvis ikke længere kan være alene hjemme, mens Hanne er på arbejde.<br><br>
-
-            - Jeg har nok den tendens til, at glasset er halvt tomt, mens Morten ser det halvt fyldt, sådan er det bare, siger Hanne Bundgård.<br><br>
-
-            Morten Bundgård fortsætter:<br><br>
-
-            - Jeg er da heller ikke blevet sådan rigtig væk endnu. Jeg har én gang måttet ringe efter dig, fordi jeg ikke anede, hvor jeg var på en lang gåtur, men havde du ikke taget telefonen, var jeg vel også fundet hjem den dag også.<br><br>
-
-            Parret smiler til hinanden og nikker. Ja, Morten Bundgård var nok fundet hjem. Endnu.
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-7.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Morten Bundgård har altid elsket at læse, </span>og han har læst enormt meget. Også på forretningsrejser rundt om i verden, men siden sygdommen blev konstateret, har han ikke åbnet en bog. Hans sidste rejse alene var til Japan i februar 2019, efter han fik sygdommen i 2018. Her satte han sig blot ind i en taxa, hvis han ikke kunne finde vej, I år stoppede han dog med at arbejde. Foto: Jakob Stigsen Andersen.
-            </figcaption>
-          </figure>
-
-          <!-- Fact box - start -->
-          <div class="fact-box">
-            <div class="journalist-info__text">
-              <h3 class="fact-box__title">Demens er en folkesygdom</h3>
-              <p class="fact-box__bulletpoint">Danmark lever <span>85-90.000</span> mennesker med en demenssygdom, som der findes flere varianter af.</p>
-              <p class="fact-box__bulletpoint">Heraf har ca. <span>50.000</span> alzheimers sygdom. Alzheimers sygdom er den hyppigste demenssygdom. Sygdommen viser sig ved hukommelsesbesvær og problemer med at finde ord. Det er især korttidshukommelsen, der bliver dårlig. Det bliver for eksempel sværere at huske navne - selv på personer, man kender godt. Det bliver også vanskeligere at gøre helt dagligdags ting som at finde vej eller tælle småbeløb sammen.</p>
-              <p class="fact-box__bulletpoint">Demens er fællesbetegnelsen for en tilstand, hvor de mentale færdigheder bliver svækket af sygdom. Ordet demens kommer fra latin og betyder <span>»væk fra sindet«</span>. Selvom man ikke ved, hvorfor demenssygdomme opstår, skyldes det altid sygelige forandringer i hjernen.</p>
-              <p class="fact-box__bulletpoint">Ca. <span>1500 personer under 65 år</span> har en demenssygdom.</p>
-              <p class="fact-box__bulletpoint">Der er ca. <span>8.000 nye tilfælde</span> af demens i Danmark hvert år.</p>
-              <p class="fact-box__bulletpoint">I <span>2040</span> forventes antallet af demente over 60 år at vokse til 120-146.000.</p>
-              <p class="fact-box__bulletpoint"><span>400.000 personer</span> i Danmark lever i dag med en dement i familien.</p>
-              <p class="fact-box__bulletpoint">Kun ca. <span>50 pct.</span> af alle demente får stillet en demensdiagnose.</p>
-              <p class="fact-box__bulletpoint">Pårørende til hjemmeboende demente bruger i gennemsnit <span>5-7 timer</span> om dagen til pleje og omsorg.</p>
-              <p class="fact-box__bulletpoint">De totale omkostninger ved demens i Danmark anslås til mere end <span>20 milliarder kr.</span> om året.</p>
-              <p class="fact-box__bulletpoint">Demens er den <span>5. hyppigste</span> dødsårsag i Danmark.</p>
-              <p class="fact-box__bulletpoint"><span>Hver tredje time</span> dør en dansker af en demenssygdom.</p>
-              <p class="fact-box__meta text-grey">Kilde: Alzheimerforeningen</p>
-            </div>
-          </div>
-          <!-- Fact box - end -->
-
-          <h4>Silkeborg ønsker tilbud til yngre med demens</h4>
-
-          <p>
-            Der findes omkring 1500 personer under 65 år i Danmark, der har en demenssygdom. Èn af dem er Morten Bundgård fra Silkeborg, og han vil rigtig gerne have nogle tilbud, der er målrettet ham.<br><br>
-
-            Det ønske deler udviklingskonsulent for demensområdet, Pia Østergaard, der også er projektleder for arbejdet med Silkeborg som demensvenlig kommune.<br><br>
-
-            - Jeg vil ikke tale om personsager, men det er klart, at der er et behov for også at tilgodese de yngre mennesker med demens, hvor behovene er anderledes. Vi har flere tilbud til folk over 65 år, da de fleste først får demens i den aldersgruppe, men det er klart, at vi er meget opmærksomme på situationer som Mortens, siger Pia Østergaard og fortsætter:<br><br>
-
-            - Lige nu har vi faktisk en ansøgning, der ligger hos Sundhedsstyrelsen, hvor vi har søgt midler til et projekt, hvor yngre med demens kan dyrke motion i naturen og få sved på panden sammen med ligesindede. Det håber jeg meget, vi får bevilget.<br><br>
-
-            Pia Østergaard fortæller også, at Silkeborg Kommune samarbejder med DGI, som har uddannede demensvenlige instruktører og med Idræt om Dagen. Ligesom der også findes pårørendecaféer, hvor man sagtens kan deltage, selvom ens pårørende er yngre.<br><br>
-
-            - Jeg skal også ned i svømmehallen og har været i golfklubben for at informere dem om, hvad demens er, så de kan hjælpe til og måske skræddersy tilbud. Det handler meget om viden og oplysning, men jeg håber samtidig på, at vi kan få etableret tilbud, der passer lige netop til Mortens målgruppe også snarest, siger Pia Østergaard.<br><br>
-          </p>
-
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-8.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Ofte bliver snakkene i stolene ledsaget af en øl eller et glas vin </span>hjemme hos Hanne og Morten Bundgård. Det er rart at få vendt dagen, men også hårdt, at tankerne om fremtiden nu er nogle helt andre end for bare fem år siden. Foto: Jakob Stigsen Andersen
-            </figcaption>
-          </figure>
-          
-          <figure class="image-group">
-            <img src="./assets/images/unnamed-9.jpg"
-                 alt="Morten artikelbillede">
-            <figcaption>
-              <span>Morten Bundgård er 57 år og syg med alzheimers sygdom. </span>Han er selv glad for, at han ikke er blevet aggressiv sammen med sin sygdom, for det ved han, at nogle godt kan blive. Hver aften tager han en sovepille, og så sover han heldigvis også godt om natten, hvilket giver mere energi til dagene. Foto: Jakob Stigsen Andersen
-            </figcaption>
-          </figure>
-          
-        </div>
-      </div>
-    </div>
-    <!-- section four - end -->
-
-    <div class="progress-line"></div>
-
   </div>
 </body>
 </html>
