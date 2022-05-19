@@ -254,6 +254,8 @@ const RippleEffect = (function () {
         uniform sampler2D tDiffuse;
         uniform vec2 delta;
         varying vec2 vUv;
+        
+
         void main() {
           vec4 texel = texture2D(tDiffuse, vUv);
 
