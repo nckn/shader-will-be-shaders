@@ -133,7 +133,7 @@ function App() {
       }
     });
 
-    let nx = Math.round(gridWidth / 2), ny = Math.round(gridHeight / 20);
+    let nx = Math.round(gridWidth / 20), ny = Math.round(gridHeight / 20);
     let dx = gridWWidth / nx, dy = gridWHeight / ny;
     for (let j = 0; j <= ny; j++) {
       const geometry = new THREE.BufferGeometry();
@@ -146,6 +146,8 @@ function App() {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
       geometry.computeBoundingSphere();
+
+      // Draw lines on x axis
       scene.add(new THREE.Line(geometry, material));
     }
 
@@ -162,10 +164,15 @@ function App() {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
       geometry.computeBoundingSphere();
+      
+      // Draw lines on y axis
       scene.add(new THREE.Line(geometry, material));
     }
-    camera.position.set(0, -gridWHeight / 2, 100);
-    camera.lookAt(new THREE.Vector3(0, -gridWHeight / 6, 0));
+    
+    camera.position.set(0, 0, 100);
+    
+    // camera.position.set(0, -gridWHeight / 2, 100);
+    // camera.lookAt(new THREE.Vector3(0, -gridWHeight / 6, 0));
 
     cameraCtrl = new OrbitControls(camera, renderer.domElement);
     cameraCtrl.enableDamping = true;
@@ -233,7 +240,8 @@ const RippleEffect = (function () {
     `;
 
     this.copyMat = new THREE.ShaderMaterial({
-      uniforms: { 'tDiffuse': { value: null } },
+      // uniforms: { 'tDiffuse': { value: null } },
+      uniforms: { 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") } },
       vertexShader: defaultVertexShader,
       fragmentShader: `
         uniform sampler2D tDiffuse;
