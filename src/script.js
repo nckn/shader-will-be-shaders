@@ -89,27 +89,36 @@ function App() {
     // });
 
     initScene();
+
+    // scene.add(mousePlane)
+
     animate();
   }
 
   function initScene() {
     scene = new THREE.Scene();
 
-    let pointLight1 = new THREE.PointLight(0xFFFF80);
+    let pointLight1 = new THREE.PointLight(0xFFFFff);
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
 
-    let pointLight2 = new THREE.PointLight(0xde3578);
-    pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
-    scene.add(pointLight2);
+    // Org light - start
+    // let pointLight1 = new THREE.PointLight(0xFFFF80);
+    // pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
+    // scene.add(pointLight1);
 
-    let pointLight3 = new THREE.PointLight(0xFF4040);
-    pointLight3.position.set(-wWidth / 2, -wHeight / 2, 50);
-    scene.add(pointLight3);
+    // let pointLight2 = new THREE.PointLight(0xde3578);
+    // pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
+    // scene.add(pointLight2);
 
-    let pointLight4 = new THREE.PointLight(0x0247e5);
-    pointLight4.position.set(wWidth / 2, -wHeight / 2, 50);
-    scene.add(pointLight4);
+    // let pointLight3 = new THREE.PointLight(0xFF4040);
+    // pointLight3.position.set(-wWidth / 2, -wHeight / 2, 50);
+    // scene.add(pointLight3);
+
+    // let pointLight4 = new THREE.PointLight(0x0247e5);
+    // pointLight4.position.set(wWidth / 2, -wHeight / 2, 50);
+    // scene.add(pointLight4);
+    // Org light - end
 
     renderer.domElement.addEventListener('mouseup', e => {
       pointLight1.color = new THREE.Color(chroma.random().hex());
