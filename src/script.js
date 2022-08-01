@@ -33,6 +33,8 @@ function App() {
 
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+  // const mousePlaneObject = new THREE.Mesh(mousePlane, new THREE.MeshLambertMaterial({color:0x00ff00}))
+
   const mousePosition = new THREE.Vector3();
   const raycaster = new THREE.Raycaster();
   let mouseOver = false;
@@ -101,6 +103,8 @@ function App() {
     let pointLight1 = new THREE.PointLight(0xFFFFff);
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
+
+    // scene.add( mousePlaneObject )
 
     // Org light - start
     // let pointLight1 = new THREE.PointLight(0xFFFF80);
@@ -249,8 +253,8 @@ const RippleEffect = (function () {
     `;
 
     this.copyMat = new THREE.ShaderMaterial({
-      // uniforms: { 'tDiffuse': { value: null } },
-      uniforms: { 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") } },
+      uniforms: { 'tDiffuse': { value: null } },
+      // uniforms: { 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") } },
       vertexShader: defaultVertexShader,
       fragmentShader: `
         uniform sampler2D tDiffuse;
@@ -261,9 +265,11 @@ const RippleEffect = (function () {
       `,
     });
 
+    // This here fragmentShader handles the movement it seems
     this.updateMat = new THREE.ShaderMaterial({
       uniforms: {
         'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'delta': new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
@@ -285,11 +291,13 @@ const RippleEffect = (function () {
             texture2D(tDiffuse, vUv + dy).r
           ) * 0.25;
           
-          // texel.g += (average - texel.r) * 0.05;
-          texel.g += (average - texel.r) * 2.0;
+          // Super fast
+          // texel.g += (average - texel.r) * 2.0;
+          // texel.g *= 0.995;
           
-          // texel.g *= 0.895;
-          texel.g *= 0.995;
+          // Super slow
+          texel.g += (average - texel.r) * 0.05;
+          texel.g *= 0.895;
           
           texel.r += texel.g;
 
@@ -303,6 +311,7 @@ const RippleEffect = (function () {
     this.normalsMat = new THREE.ShaderMaterial({
       uniforms: {
         'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'delta': new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
@@ -323,6 +332,7 @@ const RippleEffect = (function () {
     this.dropMat = new THREE.ShaderMaterial({
       uniforms: {
         'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'center': new THREE.Uniform(new THREE.Vector2()),
         'radius': { value: 0.05 },
         'strength': { value: 0.5 },
@@ -400,6 +410,7 @@ const RippleEffect = (function () {
 
     const FullScreenQuad = function (material) {
       this._mesh = new THREE.Mesh(geometry, material);
+      // this._mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color:0xff0000}));
     };
 
     Object.defineProperty(FullScreenQuad.prototype, 'material', {
