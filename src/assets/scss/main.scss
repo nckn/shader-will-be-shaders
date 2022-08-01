@@ -11,7 +11,8 @@ body {
   height: 100%;
   font-family: "CambonRegular", serif;
   color: $color-white;
-  background-color: $color-black;
+  
+  // background-color: $color-black;
   // font-family: 'SuisseBPIntlRegular';
 }
 
@@ -38,11 +39,47 @@ body {
   }
 }
 
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  // z-index: -1;
+}
+
+.master-wrapper {
+  background: red;
+  width: 100vw;
+  height: auto;
+  pointer-events: none;
+
+  .section {
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+.title {
+  // color: #000;
+  color: #f00;
+  font-size: 14rem;
+  max-width: 900px;
+}
+
 .section {
   width: 100%;
   height: 100vh;
   position: fixed;
   top: 0;
+
+  // padding: 2rem;
+  box-sizing: border-box;
+
+  @include center();
+
+  mix-blend-mode: difference;
   // top: 100vh;
   // The intro section
   &.section--one {

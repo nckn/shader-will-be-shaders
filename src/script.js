@@ -33,6 +33,8 @@ function App() {
   let gridWWidth, gridWHeight;
   let gridWidth, gridHeight;
 
+  let should_draw_lines = false
+
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
   // const mousePlaneObject = new THREE.Mesh(mousePlane, new THREE.MeshLambertMaterial({color:0x00ff00}))
@@ -106,10 +108,14 @@ function App() {
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
 
-    // add plane
+    // add object
     // const geometry = new THREE.PlaneBufferGeometry(2, 2);
+    // Make a plane
     const geometry = new THREE.PlaneBufferGeometry(wWidth, wWidth);
+    // Make a sphere
+    // const geometry = new THREE.SphereBufferGeometry(wWidth, wWidth, wWidth);
 
+    // Add new mesh
     scene.add(new THREE.Mesh(
       // geometry, this.dropMat)
       geometry, matDrop)
@@ -172,7 +178,9 @@ function App() {
       geometry.computeBoundingSphere();
 
       // Draw lines on x axis
-      scene.add(new THREE.Line(geometry, material));
+      if (should_draw_lines) {
+        scene.add(new THREE.Line(geometry, material));
+      }
     }
 
     nx = Math.round(gridWidth / 20); ny = Math.round(gridHeight / 2);
@@ -190,7 +198,9 @@ function App() {
       geometry.computeBoundingSphere();
       
       // Draw lines on y axis
-      scene.add(new THREE.Line(geometry, material));
+      if (should_draw_lines) {
+        scene.add(new THREE.Line(geometry, material));
+      }
     }
     
     camera.position.set(0, 0, 100);

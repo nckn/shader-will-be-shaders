@@ -1,6 +1,12 @@
 // $font_path: '../../../static/fonts/';
 $font_path: '../../fonts/';
 
+@font-face {
+  font-family: "Misto";
+  src: url($font_path + 'misto.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 // Base
 // @font-face {
 //   font-family: "CambonRegular";
@@ -22,7 +28,8 @@ $font_path: '../../fonts/';
 // }
 
 h1, h2, h3, h4, h5, h6, p {
-  letter-spacing: 0.35px;  
+  letter-spacing: 0.35px;
+  font-family: "Misto", sans-serif;
 }
 
 h2, h3, h4, h5 {
@@ -51,12 +58,12 @@ h2 {
 
 h3 {
   font-size: 1.5rem;
-  font-family: "CambonBlack", serif;
+  // font-family: "CambonBlack", serif;
 }
 
 h4 {
   font-size: 1.5rem;
-  font-family: "AktivGroteskBold", serif;
+  // font-family: "AktivGroteskBold", serif;
 }
 
 p {
