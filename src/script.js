@@ -17,6 +17,8 @@ import './assets/scss/index.scss'
 // Longpress
 // import LongPress from '../static/js/LongPress.js'
 
+let scene, matDrop;
+
 function App() {
   const conf = {
     el: 'canvas',
@@ -24,7 +26,7 @@ function App() {
     cameraZ: 100, // org: 100
   };
 
-  let renderer, scene, camera, cameraCtrl;
+  let renderer, camera, cameraCtrl;
   let width, height, cx, cy, wWidth, wHeight;
 
   let ripple;
@@ -103,6 +105,15 @@ function App() {
     let pointLight1 = new THREE.PointLight(0xFFFFff);
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
+
+    // add plane
+    // const geometry = new THREE.PlaneBufferGeometry(2, 2);
+    const geometry = new THREE.PlaneBufferGeometry(wWidth, wWidth);
+
+    scene.add(new THREE.Mesh(
+      // geometry, this.dropMat)
+      geometry, matDrop)
+    )
 
     // scene.add( mousePlaneObject )
 
@@ -190,7 +201,7 @@ function App() {
     cameraCtrl = new OrbitControls(camera, renderer.domElement);
     cameraCtrl.enableDamping = true;
     cameraCtrl.dampingFactor = 0.1;
-    cameraCtrl.rotateSpeed = 0.5;
+    cameraCtrl.rotateSpeed = 0.5;    
   }
 
   function animate() {
@@ -295,9 +306,13 @@ const RippleEffect = (function () {
           // texel.g += (average - texel.r) * 2.0;
           // texel.g *= 0.995;
           
+          // Medium
+          texel.g += (average - texel.r) * 0.5;
+          texel.g *= 0.995;
+          
           // Super slow
-          texel.g += (average - texel.r) * 0.05;
-          texel.g *= 0.895;
+          // texel.g += (average - texel.r) * 0.05;
+          // texel.g *= 0.895;
           
           texel.r += texel.g;
 
@@ -355,6 +370,15 @@ const RippleEffect = (function () {
         }
       `,
     });
+
+    matDrop = this.dropMat
+
+    // // add plane
+    // const geometry = new THREE.PlaneBufferGeometry(2, 2);
+
+    // scene.add(new THREE.Mesh(
+    //   geometry, this.dropMat)
+    // )
   };
 
   RippleEffect.prototype.update = function () {
@@ -407,10 +431,6 @@ const RippleEffect = (function () {
   const FullScreenQuad = (function () {
     const camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
     const geometry = new THREE.PlaneBufferGeometry(2, 2);
-
-    // scene.add(new THREE.Mesh(
-    //   geometry, new THREE.MeshBasicMaterial({ color: 0xff0000 }))
-    // )
 
     const FullScreenQuad = function (material) {
       this._mesh = new THREE.Mesh(geometry, material);
