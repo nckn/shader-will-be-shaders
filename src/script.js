@@ -253,8 +253,8 @@ const RippleEffect = (function () {
     `;
 
     this.copyMat = new THREE.ShaderMaterial({
-      // uniforms: { 'tDiffuse': { value: null } },
-      uniforms: { 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") } },
+      uniforms: { 'tDiffuse': { value: null } },
+      // uniforms: { 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") } },
       vertexShader: defaultVertexShader,
       fragmentShader: `
         uniform sampler2D tDiffuse;
@@ -268,8 +268,8 @@ const RippleEffect = (function () {
     // This here fragmentShader handles the movement it seems
     this.updateMat = new THREE.ShaderMaterial({
       uniforms: {
-        // 'tDiffuse': { value: null },
-        'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
+        'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'delta': new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
@@ -301,9 +301,8 @@ const RippleEffect = (function () {
           
           texel.r += texel.g;
 
-          // gl_FragColor = texel;
+          gl_FragColor = texel;
 
-          gl_FragColor = texture2D(tDiffuse, vUv);
           
         }
       `,
@@ -311,8 +310,8 @@ const RippleEffect = (function () {
 
     this.normalsMat = new THREE.ShaderMaterial({
       uniforms: {
-        // 'tDiffuse': { value: null },
-        'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
+        'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'delta': new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
@@ -326,15 +325,14 @@ const RippleEffect = (function () {
         vec3 dy = vec3(0.0, texture2D(tDiffuse, vec2(vUv.x, vUv.y + delta.y)).r - texel.r, delta.y);
         texel.ba = normalize(cross(dy, dx)).xz;
         gl_FragColor = texel;
-        // gl_FragColor = texture2D(tDiffuse, vUv);
       }
     `,
     });
 
     this.dropMat = new THREE.ShaderMaterial({
       uniforms: {
-        // 'tDiffuse': { value: null },
-        'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
+        'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'center': new THREE.Uniform(new THREE.Vector2()),
         'radius': { value: 0.05 },
         'strength': { value: 0.5 },
@@ -353,7 +351,6 @@ const RippleEffect = (function () {
           drop = 0.5 - cos(drop * PI) * 0.5;
           texel.r += drop * strength;
           // texel.r = clamp(texel.r, -2.0, 2.0);
-          // gl_FragColor = texture2D(tDiffuse, vUv);
           gl_FragColor = texel;
         }
       `,
@@ -410,6 +407,10 @@ const RippleEffect = (function () {
   const FullScreenQuad = (function () {
     const camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
     const geometry = new THREE.PlaneBufferGeometry(2, 2);
+
+    // scene.add(new THREE.Mesh(
+    //   geometry, new THREE.MeshBasicMaterial({ color: 0xff0000 }))
+    // )
 
     const FullScreenQuad = function (material) {
       this._mesh = new THREE.Mesh(geometry, material);
