@@ -19,6 +19,7 @@
     "html-loader": "^2.1.1",
     "html-webpack-plugin": "^5.2.0",
     "mini-css-extract-plugin": "^1.3.9",
+    "ml5": "^0.12.2",
     "portfinder-sync": "0.0.2",
     "raw-loader": "^4.0.2",
     "simplex-noise": "^2.4.0",

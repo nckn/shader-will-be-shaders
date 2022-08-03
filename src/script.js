@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+import * as ml5 from "ml5";
+
 // import ASScroll from '@ashthornton/asscroll'
 // import GSAP from 'gsap'
 // import { map } from '../static/js/math'
@@ -18,6 +20,12 @@ import './assets/scss/index.scss'
 // import LongPress from '../static/js/LongPress.js'
 
 let scene, matDrop;
+
+// ml5 - start
+let handpose;
+let video;
+let hands = [];
+// ml5 - end
 
 function App() {
   const conf = {
