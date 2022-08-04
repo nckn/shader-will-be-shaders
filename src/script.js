@@ -88,6 +88,8 @@ function App() {
       const v = new THREE.Vector3();
       camera.getWorldDirection(v);
       v.normalize();
+
+      console.log('getGridMP')
       
       // Cursor drivern
       if (is_driven_by_cursor) {
