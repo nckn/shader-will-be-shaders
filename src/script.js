@@ -33,7 +33,10 @@ let newY = 0;
 // ml5 - end
 
 let mouseOver = false;
-let renderer, camera, cameraCtrl, raycaster;;
+let renderer = null
+let camera = ''
+let cameraCtrl = null
+let raycaster = null
 
 function App() {
   const conf = {
