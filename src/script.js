@@ -28,6 +28,8 @@ let handpose;
 // let video;
 let hands = [];
 let is_driven_by_cursor = false;
+let newX = 0;
+let newY = 0;
 // ml5 - end
 
 function App() {
@@ -94,6 +96,8 @@ function App() {
       }
       // poseNet driven
       else {
+        console.log('poseNet driven')
+
         mouse.x = newX;
         mouse.y = newY;
       }
@@ -555,7 +559,7 @@ function drawCameraIntoCanvas() {
   drawKeypoints();
   drawSkeleton();
 
-  console.log("drawCameraIntoCanvas");
+  // console.log("drawCameraIntoCanvas");
 
   window.requestAnimationFrame(drawCameraIntoCanvas);
 }
@@ -586,8 +590,6 @@ function modelReady() {
 }
 
 let theBlob = document.getElementById('theBlob');
-let newX = 0;
-let newY = 0;
 
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
@@ -595,7 +597,7 @@ function drawKeypoints() {
   
   for (let i = 0; i < poses.length; i += 1) {
 
-    console.log(poses[i].pose);
+    // console.log(poses[i].pose);
 
     if (poses[i].pose['rightWrist']) {
       // console.log('rightWrist')
