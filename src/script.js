@@ -35,33 +35,6 @@ let newY = 0;
 let mouseOver = false;
 let renderer, camera, cameraCtrl, raycaster;;
 
-// const getGridMP = function () {
-const getGridMP = function (e) {
-  const v = new THREE.Vector3();
-  camera.getWorldDirection(v);
-  v.normalize();
-
-  console.log('getGridMP')
-  
-  // Cursor drivern
-  if (is_driven_by_cursor) {
-    // mouse.x = ((e.clientX / width) * 2 - 1);
-    // mouse.y = (-(e.clientY / height) * 2 + 1);
-  }
-  // poseNet driven
-  else {
-    console.log('poseNet driven')
-
-    mouse.x = newX;
-    mouse.y = newY;
-  }
-
-  raycaster.setFromCamera(mouse, camera);
-  raycaster.ray.intersectPlane(mousePlane, mousePosition);
-  // return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
-  return { x: mouse.x, y: mouse.y };
-};
-
 function App() {
   const conf = {
     el: 'canvas',
@@ -499,6 +472,34 @@ const RippleEffect = (function () {
 })();
 
 const app = new App();
+
+// const getGridMP = function () {
+function getGridMP(e) {
+  const v = new THREE.Vector3();
+  console.log(camera)
+  camera.getWorldDirection(v);
+  v.normalize();
+
+  console.log('getGridMP')
+  
+  // Cursor drivern
+  if (is_driven_by_cursor) {
+    // mouse.x = ((e.clientX / width) * 2 - 1);
+    // mouse.y = (-(e.clientY / height) * 2 + 1);
+  }
+  // poseNet driven
+  else {
+    console.log('poseNet driven')
+
+    mouse.x = newX;
+    mouse.y = newY;
+  }
+
+  raycaster.setFromCamera(mouse, camera);
+  raycaster.ray.intersectPlane(mousePlane, mousePosition);
+  // return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+  return { x: mouse.x, y: mouse.y };
+};
 
 // Copyright (c) 2019 ml5
 //
