@@ -32,6 +32,36 @@ let newX = 0;
 let newY = 0;
 // ml5 - end
 
+let mouseOver = false;
+let renderer, camera, cameraCtrl, raycaster;;
+
+// const getGridMP = function () {
+const getGridMP = function (e) {
+  const v = new THREE.Vector3();
+  camera.getWorldDirection(v);
+  v.normalize();
+
+  console.log('getGridMP')
+  
+  // Cursor drivern
+  if (is_driven_by_cursor) {
+    // mouse.x = ((e.clientX / width) * 2 - 1);
+    // mouse.y = (-(e.clientY / height) * 2 + 1);
+  }
+  // poseNet driven
+  else {
+    console.log('poseNet driven')
+
+    mouse.x = newX;
+    mouse.y = newY;
+  }
+
+  raycaster.setFromCamera(mouse, camera);
+  raycaster.ray.intersectPlane(mousePlane, mousePosition);
+  // return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+  return { x: mouse.x, y: mouse.y };
+};
+
 function App() {
   const conf = {
     el: 'canvas',
@@ -53,8 +83,7 @@ function App() {
   // const mousePlaneObject = new THREE.Mesh(mousePlane, new THREE.MeshLambertMaterial({color:0x00ff00}))
 
   const mousePosition = new THREE.Vector3();
-  const raycaster = new THREE.Raycaster();
-  let mouseOver = false;
+  raycaster = new THREE.Raycaster();
 
   init();
 
@@ -84,39 +113,13 @@ function App() {
 
     ripple = new RippleEffect(renderer, width, height);
 
-    const getGridMP = function (e) {
-      const v = new THREE.Vector3();
-      camera.getWorldDirection(v);
-      v.normalize();
-
-      console.log('getGridMP')
-      
-      // Cursor drivern
-      if (is_driven_by_cursor) {
-        mouse.x = ((e.clientX / width) * 2 - 1);
-        mouse.y = (-(e.clientY / height) * 2 + 1);
-      }
-      // poseNet driven
-      else {
-        console.log('poseNet driven')
-
-        mouse.x = newX;
-        mouse.y = newY;
-      }
-
-      raycaster.setFromCamera(mouse, camera);
-      raycaster.ray.intersectPlane(mousePlane, mousePosition);
-      // return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
-      return { x: mouse.x, y: mouse.y };
-    };
-
     // renderer.domElement.addEventListener('mousemove', e => {
     document.addEventListener('mousemove', e => {
-      mouseOver = true;
-      const gp = getGridMP(e);
-      ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
+      // mouseOver = true;
+      // const gp = getGridMP(e);
+      // ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
 
-      console.log('mousemove')
+      // console.log('mousemove')
     });
     renderer.domElement.addEventListener('mouseleave', e => { mouseOver = false; });
 
@@ -616,6 +619,12 @@ function drawKeypoints() {
         left: newX,
         top: newY
       })
+
+      mouseOver = true;
+      const gp = getGridMP();
+      ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
+
+      console.log('mousemove')
 
       // theBlob.style.left = `${newX}px`;
       // theBlob.style.top = `${newY}px`;
