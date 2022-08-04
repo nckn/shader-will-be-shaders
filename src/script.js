@@ -114,6 +114,8 @@ function App() {
       mouseOver = true;
       const gp = getGridMP(e);
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
+
+      console.log('mousemove')
     });
     renderer.domElement.addEventListener('mouseleave', e => { mouseOver = false; });
 
