@@ -27,6 +27,7 @@ let scene, matDrop;
 let handpose;
 // let video;
 let hands = [];
+let is_driven_by_cursor = false;
 // ml5 - end
 
 function App() {
@@ -85,8 +86,17 @@ function App() {
       const v = new THREE.Vector3();
       camera.getWorldDirection(v);
       v.normalize();
-      mouse.x = ((e.clientX / width) * 2 - 1);
-      mouse.y = (-(e.clientY / height) * 2 + 1);
+      
+      // Cursor drivern
+      if (is_driven_by_cursor) {
+        mouse.x = ((e.clientX / width) * 2 - 1);
+        mouse.y = (-(e.clientY / height) * 2 + 1);
+      }
+      // poseNet driven
+      else {
+
+      }
+
       raycaster.setFromCamera(mouse, camera);
       raycaster.ray.intersectPlane(mousePlane, mousePosition);
       return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
@@ -575,6 +585,8 @@ function modelReady() {
 }
 
 let theBlob = document.getElementById('theBlob');
+let newX = 0;
+let newY = 0;
 
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
@@ -588,8 +600,8 @@ function drawKeypoints() {
       // console.log('rightWrist')
       // console.log(poses[i].pose['rightWrist'])
 
-      const newX = poses[i].pose['rightWrist'].x / 640 * window.innerWidth;
-      const newY = poses[i].pose['rightWrist'].y / 640 * window.innerHeight;
+      newX = poses[i].pose['rightWrist'].x / 640 * window.innerWidth;
+      newY = poses[i].pose['rightWrist'].y / 640 * window.innerHeight;
 
       gsap.to(theBlob, 0.2, {
         left: newX,

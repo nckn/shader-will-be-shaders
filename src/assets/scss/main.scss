@@ -69,7 +69,12 @@ body {
 
 #canvasPose {
   z-index: 12;
-  visibility: hidden;
+  // visibility: hidden;
+  opacity: 0.1;
+
+  transform: rotateY(180deg);
+  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+  -moz-transform:rotateY(180deg); /* Firefox */
 }
 
 .master-wrapper {
