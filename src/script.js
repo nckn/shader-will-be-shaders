@@ -104,7 +104,8 @@ function App() {
 
       raycaster.setFromCamera(mouse, camera);
       raycaster.ray.intersectPlane(mousePlane, mousePosition);
-      return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+      // return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+      return { x: mouse.x, y: mouse.y };
     };
 
     renderer.domElement.addEventListener('mousemove', e => {
