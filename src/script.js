@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+import gsap from 'gsap'
+
 import * as ml5 from "ml5";
 
 // import ASScroll from '@ashthornton/asscroll'
@@ -573,8 +575,14 @@ function drawKeypoints() {
 
       const newX = poses[i].pose['rightWrist'].x / 640 * window.innerWidth;
       const newY = poses[i].pose['rightWrist'].y / 640 * window.innerHeight;
-      theBlob.style.left = `${newX}px`;
-      theBlob.style.top = `${newY}px`;
+
+      gsap.to(theBlob, 0.2, {
+        left: newX,
+        top: newY
+      })
+
+      // theBlob.style.left = `${newX}px`;
+      // theBlob.style.top = `${newY}px`;
     }
 
     // For each pose detected, loop through all the keypoints
