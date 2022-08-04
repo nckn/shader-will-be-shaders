@@ -4,6 +4,16 @@
   padding: 0;
 }
 
+#theBlob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #f00;
+  z-index: 111111;
+}
+
 html,
 body {
   // overflow: hidden;
@@ -59,6 +69,7 @@ body {
 
 #canvasPose {
   z-index: 12;
+  visibility: hidden;
 }
 
 .master-wrapper {

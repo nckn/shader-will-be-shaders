@@ -508,6 +508,11 @@ else {
   // video.play();
   document.body.addEventListener('click', _ => {
     video.play();
+
+    poseNet = ml5.poseNet(video, modelReady);
+    poseNet.on("pose", gotPoses);
+    console.log('poseNet')
+    console.log(poseNet)
   })
 }
 
@@ -529,12 +534,14 @@ function drawCameraIntoCanvas() {
 // Loop over the drawCameraIntoCanvas function
 drawCameraIntoCanvas();
 
+let poseNet;
 setTimeout(_ => {
   // Create a new poseNet method with a single detection
-  const poseNet = ml5.poseNet(video, modelReady);
-  console.log('poseNet')
-  console.log(poseNet)
-  poseNet.on("pose", gotPoses);
+  
+  // poseNet = ml5.poseNet(video, modelReady);
+  // poseNet.on("pose", gotPoses);
+  // console.log('poseNet')
+  // console.log(poseNet)
 }, 1000)
 
 console.log('ml5')
@@ -550,17 +557,24 @@ function modelReady() {
   poseNet.multiPose(video);
 }
 
+let theBlob = document.getElementById('theBlob');
+
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
   // Loop through all the poses detected
   
   for (let i = 0; i < poses.length; i += 1) {
 
-    console.log(poses[i]);
+    console.log(poses[i].pose);
 
-    if (poses.pose['rightWrist']) {
-      console.log('rightWrist')
-      console.log(poses['rightWrist'])
+    if (poses[i].pose['rightWrist']) {
+      // console.log('rightWrist')
+      // console.log(poses[i].pose['rightWrist'])
+
+      const newX = poses[i].pose['rightWrist'].x / 640 * window.innerWidth;
+      const newY = poses[i].pose['rightWrist'].y / 640 * window.innerHeight;
+      theBlob.style.left = `${newX}px`;
+      theBlob.style.top = `${newY}px`;
     }
 
     // For each pose detected, loop through all the keypoints
