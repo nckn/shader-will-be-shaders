@@ -504,6 +504,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     console.log('navigator.mediaDevices - 2')
     video.srcObject = stream;
     video.play();
+
+    poseNet = ml5.poseNet(video, modelReady);
+    poseNet.on("pose", gotPoses);
   });
 }
 else {
