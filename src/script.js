@@ -505,10 +505,19 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     video.srcObject = stream;
     video.play();
 
-    setTimeout(_ => {
+    // setTimeout(_ => {
+    //   poseNet = ml5.poseNet(video, modelReady);
+    //   poseNet.on("pose", gotPoses);
+    // }, 1000)
+
+    document.body.addEventListener('click', _ => {
+      // video.play();
+  
       poseNet = ml5.poseNet(video, modelReady);
       poseNet.on("pose", gotPoses);
-    }, 1000)
+      console.log('poseNet')
+      console.log(poseNet)
+    })
 
   });
 }
