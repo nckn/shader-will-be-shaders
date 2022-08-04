@@ -94,7 +94,8 @@ function App() {
       }
       // poseNet driven
       else {
-
+        mouse.x = newX;
+        mouse.y = newY;
       }
 
       raycaster.setFromCamera(mouse, camera);
