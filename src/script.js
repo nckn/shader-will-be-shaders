@@ -33,10 +33,20 @@ let newY = 0;
 // ml5 - end
 
 let mouseOver = false;
-let renderer = null
-let camera = ''
+let renderer = null;
+let camera = '';
 let cameraCtrl = null
 let raycaster = null
+const mouse = new THREE.Vector2();
+const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+const mousePosition = new THREE.Vector3();
+let width, height, cx, cy, wWidth, wHeight;
+
+let ripple;
+let gridWWidth, gridWHeight;
+let gridWidth, gridHeight;
+
+let should_draw_lines = false
 
 function App() {
   const conf = {
@@ -45,20 +55,10 @@ function App() {
     cameraZ: 100, // org: 100
   };
 
-  let renderer, camera, cameraCtrl;
-  let width, height, cx, cy, wWidth, wHeight;
+  // let renderer, camera, cameraCtrl;
 
-  let ripple;
-  let gridWWidth, gridWHeight;
-  let gridWidth, gridHeight;
-
-  let should_draw_lines = false
-
-  const mouse = new THREE.Vector2();
-  const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
   // const mousePlaneObject = new THREE.Mesh(mousePlane, new THREE.MeshLambertMaterial({color:0x00ff00}))
 
-  const mousePosition = new THREE.Vector3();
   raycaster = new THREE.Raycaster();
 
   init();
@@ -479,7 +479,7 @@ const app = new App();
 // const getGridMP = function () {
 function getGridMP(e) {
   const v = new THREE.Vector3();
-  console.log(camera)
+  // console.log(camera)
   camera.getWorldDirection(v);
   v.normalize();
 
@@ -500,8 +500,8 @@ function getGridMP(e) {
 
   raycaster.setFromCamera(mouse, camera);
   raycaster.ray.intersectPlane(mousePlane, mousePosition);
-  // return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
-  return { x: mouse.x, y: mouse.y };
+  return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+  // return { x: mouse.x, y: mouse.y };
 };
 
 // Copyright (c) 2019 ml5
@@ -589,8 +589,8 @@ setTimeout(_ => {
   // console.log(poseNet)
 }, 1000)
 
-console.log('ml5')
-console.log(ml5)
+// console.log('ml5'')
+// console.log(ml5)'
 
 // A function that gets called every time there's an update from the model
 function gotPoses(results) {
@@ -626,6 +626,8 @@ function drawKeypoints() {
 
       mouseOver = true;
       const gp = getGridMP();
+      console.log('gp')
+      console.log(gp)
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
 
       console.log('mousemove')
