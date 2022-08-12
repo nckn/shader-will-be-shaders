@@ -89,13 +89,13 @@ function App() {
 
     ripple = new RippleEffect(renderer, width, height);
 
-    // renderer.domElement.addEventListener('mousemove', e => {
-    document.addEventListener('mousemove', e => {
-      // mouseOver = true;
-      // const gp = getGridMP(e);
-      // ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
+    renderer.domElement.addEventListener('mousemove', e => {
+    // document.addEventListener('mousemove', e => {
+      mouseOver = true;
+      const gp = getGridMP(e);
+      ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
 
-      // console.log('mousemove')
+      console.log('mousemove')
     });
     renderer.domElement.addEventListener('mouseleave', e => { mouseOver = false; });
 
@@ -483,7 +483,7 @@ function getGridMP(e) {
   camera.getWorldDirection(v);
   v.normalize();
 
-  console.log('getGridMP')
+  // console.log('getGridMP')
   
   // Cursor drivern
   if (is_driven_by_cursor) {
@@ -492,7 +492,7 @@ function getGridMP(e) {
   }
   // poseNet driven
   else {
-    console.log('poseNet driven')
+    // console.log('poseNet driven')
 
     mouse.x = newX;
     mouse.y = newY;
@@ -517,6 +517,7 @@ PoseNet using p5.js
 
 // Grab elements, create settings, etc.
 var video = document.getElementById("video");
+video.playbackRate = 0.25
 console.log('video');
 console.log(video);
 var canvas = document.getElementById("canvasPose");
@@ -626,11 +627,11 @@ function drawKeypoints() {
 
       mouseOver = true;
       const gp = getGridMP();
-      console.log('gp')
-      console.log(gp)
+      // console.log('gp')
+      // console.log(gp)
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
 
-      console.log('mousemove')
+      // console.log('mousemove')
 
       // theBlob.style.left = `${newX}px`;
       // theBlob.style.top = `${newY}px`;
