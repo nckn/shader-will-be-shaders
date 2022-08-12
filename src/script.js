@@ -92,6 +92,9 @@ function App() {
     renderer.domElement.addEventListener('mousemove', e => {
     // document.addEventListener('mousemove', e => {
       mouseOver = true;
+
+      console.log('mousemove')
+
       const gp = getGridMP(e);
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
 
