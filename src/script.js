@@ -211,10 +211,16 @@ function App() {
     // camera.position.set(0, -gridWHeight / 2, 100);
     // camera.lookAt(new THREE.Vector3(0, -gridWHeight / 6, 0));
 
+    // Should we have orbit controls
+    // addOrbitControls()
+  }
+
+  // const addOrbitControls = () => {
+  function addOrbitControls() {
     cameraCtrl = new OrbitControls(camera, renderer.domElement);
     cameraCtrl.enableDamping = true;
     cameraCtrl.dampingFactor = 0.1;
-    cameraCtrl.rotateSpeed = 0.5;    
+    cameraCtrl.rotateSpeed = 0.5;
   }
 
   function animate() {
