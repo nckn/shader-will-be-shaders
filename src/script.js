@@ -1,10 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import gsap from 'gsap'
-
-import * as ml5 from "ml5";
-
 // import ASScroll from '@ashthornton/asscroll'
 // import GSAP from 'gsap'
 // import { map } from '../static/js/math'
@@ -23,31 +19,6 @@ import './assets/scss/index.scss'
 
 let scene, matDrop;
 
-// ml5 - start
-let handpose;
-// let video;
-let hands = [];
-let is_driven_by_cursor = false;
-let newX = 0;
-let newY = 0;
-// ml5 - end
-
-let mouseOver = false;
-let renderer = null;
-let camera = '';
-let cameraCtrl = null
-let raycaster = null
-const mouse = new THREE.Vector2();
-const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-const mousePosition = new THREE.Vector3();
-let width, height, cx, cy, wWidth, wHeight;
-
-let ripple;
-let gridWWidth, gridWHeight;
-let gridWidth, gridHeight;
-
-let should_draw_lines = false
-
 function App() {
   const conf = {
     el: 'canvas',
@@ -55,11 +26,22 @@ function App() {
     cameraZ: 100, // org: 100
   };
 
-  // let renderer, camera, cameraCtrl;
+  let renderer, camera, cameraCtrl;
+  let width, height, cx, cy, wWidth, wHeight;
 
+  let ripple;
+  let gridWWidth, gridWHeight;
+  let gridWidth, gridHeight;
+
+  let should_draw_lines = false
+
+  const mouse = new THREE.Vector2();
+  const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
   // const mousePlaneObject = new THREE.Mesh(mousePlane, new THREE.MeshLambertMaterial({color:0x00ff00}))
 
-  raycaster = new THREE.Raycaster();
+  const mousePosition = new THREE.Vector3();
+  const raycaster = new THREE.Raycaster();
+  let mouseOver = false;
 
   init();
 
@@ -89,16 +71,24 @@ function App() {
 
     ripple = new RippleEffect(renderer, width, height);
 
+    const getGridMP = function (e) {
+      const v = new THREE.Vector3();
+      camera.getWorldDirection(v);
+      v.normalize();
+      mouse.x = ((e.clientX / width) * 2 - 1);
+      mouse.y = (-(e.clientY / height) * 2 + 1);
+      raycaster.setFromCamera(mouse, camera);
+      raycaster.ray.intersectPlane(mousePlane, mousePosition);
+      return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+    };
+
     renderer.domElement.addEventListener('mousemove', e => {
-    // document.addEventListener('mousemove', e => {
       mouseOver = true;
 
       console.log('mousemove')
 
       const gp = getGridMP(e);
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
-
-      console.log('mousemove')
     });
     renderer.domElement.addEventListener('mouseleave', e => { mouseOver = false; });
 
@@ -221,10 +211,21 @@ function App() {
     // camera.position.set(0, -gridWHeight / 2, 100);
     // camera.lookAt(new THREE.Vector3(0, -gridWHeight / 6, 0));
 
+    // Should we have orbit controls
+    // addOrbitControls()
+
+    setTimeout(_ => {
+      const overlay = document.querySelector('.overlay')
+      overlay.classList.add('scene--loaded')
+    }, 1000)
+  }
+
+  // const addOrbitControls = () => {
+  function addOrbitControls() {
     cameraCtrl = new OrbitControls(camera, renderer.domElement);
     cameraCtrl.enableDamping = true;
     cameraCtrl.dampingFactor = 0.1;
-    cameraCtrl.rotateSpeed = 0.5;    
+    cameraCtrl.rotateSpeed = 0.5;
   }
 
   function animate() {
@@ -477,194 +478,8 @@ const RippleEffect = (function () {
   return RippleEffect;
 })();
 
-const app = new App();
-
-// const getGridMP = function () {
-function getGridMP(e) {
-  const v = new THREE.Vector3();
-  // console.log(camera)
-  camera.getWorldDirection(v);
-  v.normalize();
-
-  // console.log('getGridMP')
-  
-  // Cursor drivern
-  if (is_driven_by_cursor) {
-    // mouse.x = ((e.clientX / width) * 2 - 1);
-    // mouse.y = (-(e.clientY / height) * 2 + 1);
-  }
-  // poseNet driven
-  else {
-    // console.log('poseNet driven')
-
-    mouse.x = newX;
-    mouse.y = newY;
-  }
-
-  raycaster.setFromCamera(mouse, camera);
-  raycaster.ray.intersectPlane(mousePlane, mousePosition);
-  return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
-  // return { x: mouse.x, y: mouse.y };
-};
-
-// Copyright (c) 2019 ml5
-//
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
-/* ===
-ml5 Example
-PoseNet using p5.js
-=== */
-/* eslint-disable */
-
-// Grab elements, create settings, etc.
-var video = document.getElementById("video");
-video.playbackRate = 0.25
-console.log('video');
-console.log(video);
-var canvas = document.getElementById("canvasPose");
-var ctx = canvas.getContext("2d");
-
-// The detected positions will be inside an array
-let poses = [];
-
-// Create a webcam capture
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  console.log('navigator.mediaDevices - 1')
-  navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-    console.log('navigator.mediaDevices - 2')
-    video.srcObject = stream;
-    video.play();
-
-    // setTimeout(_ => {
-    //   poseNet = ml5.poseNet(video, modelReady);
-    //   poseNet.on("pose", gotPoses);
-    // }, 1000)
-
-    document.body.addEventListener('click', _ => {
-      // video.play();
-  
-      poseNet = ml5.poseNet(video, modelReady);
-      poseNet.on("pose", gotPoses);
-      console.log('poseNet')
-      console.log(poseNet)
-    })
-
-  });
-}
-else {
-  // video.play();
-  document.body.addEventListener('click', _ => {
-    video.play();
-
-    poseNet = ml5.poseNet(video, modelReady);
-    poseNet.on("pose", gotPoses);
-    console.log('poseNet')
-    console.log(poseNet)
-  })
-}
-
-// A function to draw the video and poses into the canvas.
-// This function is independent of the result of posenet
-// This way the video will not seem slow if poseNet
-// is not detecting a position
-function drawCameraIntoCanvas() {
-  // Draw the video element into the canvas
-  ctx.drawImage(video, 0, 0, 640, 480);
-  // We can call both functions to draw all keypoints and the skeletons
-  drawKeypoints();
-  drawSkeleton();
-
-  // console.log("drawCameraIntoCanvas");
-
-  window.requestAnimationFrame(drawCameraIntoCanvas);
-}
-// Loop over the drawCameraIntoCanvas function
-drawCameraIntoCanvas();
-
-let poseNet;
-setTimeout(_ => {
-  // Create a new poseNet method with a single detection
-  
-  // poseNet = ml5.poseNet(video, modelReady);
-  // poseNet.on("pose", gotPoses);
-  // console.log('poseNet')
-  // console.log(poseNet)
-}, 1000)
-
-// console.log('ml5'')
-// console.log(ml5)'
-
-// A function that gets called every time there's an update from the model
-function gotPoses(results) {
-  poses = results;
-}
-
-function modelReady() {
-  console.log("model ready");
-  poseNet.multiPose(video);
-}
-
-let theBlob = document.getElementById('theBlob');
-
-// A function to draw ellipses over the detected keypoints
-function drawKeypoints() {
-  // Loop through all the poses detected
-  
-  for (let i = 0; i < poses.length; i += 1) {
-
-    // console.log(poses[i].pose);
-
-    if (poses[i].pose['rightWrist']) {
-      // console.log('rightWrist')
-      // console.log(poses[i].pose['rightWrist'])
-
-      newX = poses[i].pose['rightWrist'].x / 640 * window.innerWidth;
-      newY = poses[i].pose['rightWrist'].y / 640 * window.innerHeight;
-
-      gsap.to(theBlob, 0.2, {
-        left: newX,
-        top: newY
-      })
-
-      mouseOver = true;
-      const gp = getGridMP();
-      // console.log('gp')
-      // console.log(gp)
-      ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
-
-      // console.log('mousemove')
-
-      // theBlob.style.left = `${newX}px`;
-      // theBlob.style.top = `${newY}px`;
-    }
-
-    // For each pose detected, loop through all the keypoints
-    for (let j = 0; j < poses[i].pose.keypoints.length; j += 1) {
-      let keypoint = poses[i].pose.keypoints[j];
-      // Only draw an ellipse is the pose probability is bigger than 0.2
-      if (keypoint.score > 0.2) {
-        ctx.beginPath();
-        ctx.arc(keypoint.position.x, keypoint.position.y, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-// A function to draw the skeletons
-function drawSkeleton() {
-  // Loop through all the skeletons detected
-  for (let i = 0; i < poses.length; i += 1) {
-    // For every skeleton, loop through all body connections
-    for (let j = 0; j < poses[i].skeleton.length; j += 1) {
-      let partA = poses[i].skeleton[j][0];
-      let partB = poses[i].skeleton[j][1];
-      ctx.beginPath();
-      ctx.moveTo(partA.position.x, partA.position.y);
-      ctx.lineTo(partB.position.x, partB.position.y);
-      ctx.stroke();
-    }
-  }
-}
+// const app = new App();
+window.addEventListener('DOMContentLoaded', (event) => {
+  const app = new App();
+  // console.log('DOM fully loaded and parsed');
+})
