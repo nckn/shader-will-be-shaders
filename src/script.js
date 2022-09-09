@@ -213,6 +213,11 @@ function App() {
 
     // Should we have orbit controls
     // addOrbitControls()
+
+    setTimeout(_ => {
+      const overlay = document.querySelector('.overlay')
+      overlay.classList.add('scene--loaded')
+    }, 1000)
   }
 
   // const addOrbitControls = () => {
@@ -473,4 +478,8 @@ const RippleEffect = (function () {
   return RippleEffect;
 })();
 
-const app = new App();
+// const app = new App();
+window.addEventListener('DOMContentLoaded', (event) => {
+  const app = new App();
+  // console.log('DOM fully loaded and parsed');
+})
