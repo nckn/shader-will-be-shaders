@@ -106,7 +106,7 @@ function App() {
     scene.add(pointLight1);
 
     // Make a plane
-    const geometry = new THREE.PlaneBufferGeometry(wWidth, wWidth);
+    const geometry = new THREE.PlaneBufferGeometry(wWidth, wHeight);
     // Make a sphere
     // const geometry = new THREE.SphereBufferGeometry(wWidth, wWidth, wWidth);
 
