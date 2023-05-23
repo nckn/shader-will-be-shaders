@@ -111,6 +111,12 @@ function App() {
 
     // Make a plane
     const geometry = new THREE.PlaneBufferGeometry(wWidth, wHeight, 100, 100);
+    // Verify vertex positions
+    const positions = geometry.getAttribute('position');
+    console.log(positions);
+    // Verify UV coordinates
+    const uvs = geometry.getAttribute('uv');
+    console.log(uvs);
     const materialPlane = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       side: THREE.DoubleSide,
@@ -124,13 +130,17 @@ function App() {
           varying vec2 vUv;
 
           void main() {
-            vec4 texel = texture2D(hmap, vUv);
+            vec3 displacedPosition = position;
 
-            float displacement = 0.5;
-            vec3 displacedPosition = position + normal * displacement * texel.r;
-            displacedPosition.g += texel.g;
+            // Retrieve the displacement value from the height map texture
+            vec4 texel = texture2D(hmap, uv);
+            float displacement = 10.0 * texel.r;
 
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
+            // Apply the displacement to the vertex position
+            displacedPosition += normal * displacement;
+
+            vec4 mvPosition = modelViewMatrix * vec4(displacedPosition, 1.0);
+            gl_Position = projectionMatrix * mvPosition;
 
             vUv = uv;
           }
@@ -146,7 +156,9 @@ function App() {
             float shift = sin(texel.r * 10.0);
             vec3 shiftedColor = vec3(gl_FragColor.r, gl_FragColor.g, gl_FragColor.b + shift);
 
-            gl_FragColor = vec4(shiftedColor, 1.0);
+            // gl_FragColor = vec4(shiftedColor, 1.0);
+            vec4 debugColor = vec4(texel.r, 0.0, 0.0, 1.0);
+            gl_FragColor = debugColor;
           }
         `;
       }
@@ -270,7 +282,7 @@ function App() {
       const x = Math.cos(time) * 0.2;
       const y = Math.sin(time) * 0.2;
       ripple.addDrop(x, y, 0.05, -0.04);
-      
+
       // if(matShader) {
       //   matShader.uniforms.time.value = time * 1000;
       //   console.log(matShader)
