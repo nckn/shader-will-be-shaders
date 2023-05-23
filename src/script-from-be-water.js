@@ -17,24 +17,28 @@ import './assets/scss/index.scss'
 // Longpress
 // import LongPress from '../static/js/LongPress.js'
 
+let scene, matDrop;
+
 function App() {
   const conf = {
     el: 'canvas',
-    fov: 75,
-    cameraZ: 100,
+    fov: 35, // org: 75
+    cameraZ: 100, // org: 100
   };
 
-  let renderer, scene, camera, cameraCtrl;
+  let renderer, camera, cameraCtrl;
   let width, height, cx, cy, wWidth, wHeight;
 
   let ripple;
   let gridWWidth, gridWHeight;
   let gridWidth, gridHeight;
 
-  let should_draw_lines = true
+  let should_draw_lines = false
 
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+  // const mousePlaneObject = new THREE.Mesh(mousePlane, new THREE.MeshLambertMaterial({color:0x00ff00}))
+
   const mousePosition = new THREE.Vector3();
   const raycaster = new THREE.Raycaster();
   let mouseOver = false;
@@ -43,7 +47,7 @@ function App() {
 
   function init() {
 
-    console.log('initing alright')
+    console.log('initing alright _ - - - - - - -  æ æ æ æ æ')
     // const gl = renderer.getContext();
     // const floatTextures = gl.getExtension('OES_texture_float');
     // if (!floatTextures) {
@@ -53,9 +57,7 @@ function App() {
 
     renderer = new THREE.WebGLRenderer({ canvas: document.getElementById(conf.el), antialias: true });
     camera = new THREE.PerspectiveCamera(conf.fov);
-    camera.position.x = 20;
     // camera.position.z = conf.cameraZ;
-    // camera.lookAt(new THREE.Vector3(0,1,0))
 
     updateSize();
     window.addEventListener('resize', updateSize, false);
@@ -82,6 +84,9 @@ function App() {
 
     renderer.domElement.addEventListener('mousemove', e => {
       mouseOver = true;
+
+      console.log('mousemove')
+
       const gp = getGridMP(e);
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
     });
@@ -93,27 +98,51 @@ function App() {
     // });
 
     initScene();
+
+    // scene.add(mousePlane)
+
     animate();
   }
 
   function initScene() {
     scene = new THREE.Scene();
 
-    let pointLight1 = new THREE.PointLight(0xFFFF80);
+    let pointLight1 = new THREE.PointLight(0xFFFFff);
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
 
-    let pointLight2 = new THREE.PointLight(0xde3578);
-    pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
-    scene.add(pointLight2);
+    // add object
+    // const geometry = new THREE.PlaneBufferGeometry(2, 2);
+    // Make a plane
+    const geometry = new THREE.PlaneBufferGeometry(wWidth, wWidth);
+    // Make a sphere
+    // const geometry = new THREE.SphereBufferGeometry(wWidth, wWidth, wWidth);
 
-    let pointLight3 = new THREE.PointLight(0xFF4040);
-    pointLight3.position.set(-wWidth / 2, -wHeight / 2, 50);
-    scene.add(pointLight3);
+    // Add new mesh
+    scene.add(new THREE.Mesh(
+      // geometry, this.dropMat)
+      geometry, matDrop)
+    )
 
-    let pointLight4 = new THREE.PointLight(0x0247e5);
-    pointLight4.position.set(wWidth / 2, -wHeight / 2, 50);
-    scene.add(pointLight4);
+    // scene.add( mousePlaneObject )
+
+    // Org light - start
+    // let pointLight1 = new THREE.PointLight(0xFFFF80);
+    // pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
+    // scene.add(pointLight1);
+
+    // let pointLight2 = new THREE.PointLight(0xde3578);
+    // pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
+    // scene.add(pointLight2);
+
+    // let pointLight3 = new THREE.PointLight(0xFF4040);
+    // pointLight3.position.set(-wWidth / 2, -wHeight / 2, 50);
+    // scene.add(pointLight3);
+
+    // let pointLight4 = new THREE.PointLight(0x0247e5);
+    // pointLight4.position.set(wWidth / 2, -wHeight / 2, 50);
+    // scene.add(pointLight4);
+    // Org light - end
 
     renderer.domElement.addEventListener('mouseup', e => {
       pointLight1.color = new THREE.Color(chroma.random().hex());
@@ -137,7 +166,7 @@ function App() {
       }
     });
 
-    let nx = Math.round(gridWidth / 2), ny = Math.round(gridHeight / 20);
+    let nx = Math.round(gridWidth / 20), ny = Math.round(gridHeight / 20);
     let dx = gridWWidth / nx, dy = gridWHeight / ny;
     for (let j = 0; j <= ny; j++) {
       const geometry = new THREE.BufferGeometry();
@@ -150,7 +179,6 @@ function App() {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
       geometry.computeBoundingSphere();
-
 
       // Draw lines on x axis
       if (should_draw_lines) {
@@ -171,16 +199,29 @@ function App() {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
       geometry.computeBoundingSphere();
-
+      
       // Draw lines on y axis
       if (should_draw_lines) {
         scene.add(new THREE.Line(geometry, material));
       }
     }
-    // camera.position.set(0, -gridWHeight / 2, 100);
+    
     camera.position.set(0, 0, 100);
-    camera.lookAt(new THREE.Vector3(0, -gridWHeight / 6, 0));
+    
+    // camera.position.set(0, -gridWHeight / 2, 100);
+    // camera.lookAt(new THREE.Vector3(0, -gridWHeight / 6, 0));
 
+    // Should we have orbit controls
+    addOrbitControls()
+
+    setTimeout(_ => {
+      const overlay = document.querySelector('.overlay')
+      overlay.classList.add('scene--loaded')
+    }, 1000)
+  }
+
+  // const addOrbitControls = () => {
+  function addOrbitControls() {
     cameraCtrl = new OrbitControls(camera, renderer.domElement);
     cameraCtrl.enableDamping = true;
     cameraCtrl.dampingFactor = 0.1;
@@ -248,6 +289,7 @@ const RippleEffect = (function () {
 
     this.copyMat = new THREE.ShaderMaterial({
       uniforms: { 'tDiffuse': { value: null } },
+      // uniforms: { 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") } },
       vertexShader: defaultVertexShader,
       fragmentShader: `
         uniform sampler2D tDiffuse;
@@ -258,9 +300,11 @@ const RippleEffect = (function () {
       `,
     });
 
+    // This here fragmentShader handles the movement it seems
     this.updateMat = new THREE.ShaderMaterial({
       uniforms: {
         'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'delta': new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
@@ -268,6 +312,8 @@ const RippleEffect = (function () {
         uniform sampler2D tDiffuse;
         uniform vec2 delta;
         varying vec2 vUv;
+        
+
         void main() {
           vec4 texel = texture2D(tDiffuse, vUv);
 
@@ -279,11 +325,24 @@ const RippleEffect = (function () {
             texture2D(tDiffuse, vUv + dx).r +
             texture2D(tDiffuse, vUv + dy).r
           ) * 0.25;
-          texel.g += (average - texel.r) * 2.0;
+          
+          // Super fast
+          // texel.g += (average - texel.r) * 2.0;
+          // texel.g *= 0.995;
+          
+          // Medium
+          texel.g += (average - texel.r) * 0.5;
           texel.g *= 0.995;
+          
+          // Super slow
+          // texel.g += (average - texel.r) * 0.05;
+          // texel.g *= 0.895;
+          
           texel.r += texel.g;
 
           gl_FragColor = texel;
+
+          
         }
       `,
     });
@@ -291,6 +350,7 @@ const RippleEffect = (function () {
     this.normalsMat = new THREE.ShaderMaterial({
       uniforms: {
         'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'delta': new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
@@ -311,6 +371,7 @@ const RippleEffect = (function () {
     this.dropMat = new THREE.ShaderMaterial({
       uniforms: {
         'tDiffuse': { value: null },
+        // 'tDiffuse': { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") },
         'center': new THREE.Uniform(new THREE.Vector2()),
         'radius': { value: 0.05 },
         'strength': { value: 0.5 },
@@ -333,6 +394,15 @@ const RippleEffect = (function () {
         }
       `,
     });
+
+    matDrop = this.dropMat
+
+    // // add plane
+    // const geometry = new THREE.PlaneBufferGeometry(2, 2);
+
+    // scene.add(new THREE.Mesh(
+    //   geometry, this.dropMat)
+    // )
   };
 
   RippleEffect.prototype.update = function () {
@@ -388,6 +458,7 @@ const RippleEffect = (function () {
 
     const FullScreenQuad = function (material) {
       this._mesh = new THREE.Mesh(geometry, material);
+      // this._mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color:0xff0000}));
     };
 
     Object.defineProperty(FullScreenQuad.prototype, 'material', {
@@ -407,4 +478,8 @@ const RippleEffect = (function () {
   return RippleEffect;
 })();
 
-const app = new App();
+// const app = new App();
+window.addEventListener('DOMContentLoaded', (event) => {
+  const app = new App();
+  // console.log('DOM fully loaded and parsed');
+})
