@@ -19,17 +19,6 @@ import './assets/scss/index.scss'
 
 let scene, matDrop;
 
-let materialPlane = null
-// let materialPlane = {}
-// materialPlane.uniforms.time.value = 0
-// // let materialPlane = {
-// //   uniforms: {
-// //     time: {
-// //       value: 0
-// //     }
-// //   }
-// // }
-
 function App() {
   const conf = {
     el: 'canvas',
@@ -49,7 +38,7 @@ function App() {
   // The mesh itself
   let thePlane = null
   let matShader = null
-  // let materialPlane = null
+  let materialPlane = null
 
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -134,30 +123,31 @@ function App() {
       side: THREE.DoubleSide,
       metalness: 0.5,
       roughness: 0.5,
+      // wireframe: true,
       onBeforeCompile: shader => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
         shader.vertexShader = `
           uniform sampler2D hmap;
           varying vec2 vUv;
-    
+
           void main() {
             vec3 displacedPosition = position;
-    
+
             // Retrieve the displacement value from the height map texture
             vec4 texel = texture2D(hmap, uv);
             float displacement = 10.0 * texel.r;
-    
+
             // Apply the displacement to the vertex position
             displacedPosition += normal * displacement;
-    
+
             vec4 mvPosition = modelViewMatrix * vec4(displacedPosition, 1.0);
             gl_Position = projectionMatrix * mvPosition;
-    
+
             vUv = uv;
           }
         `;
-    
+
         shader.fragmentShader = `
           uniform float time; // Add time uniform
           uniform sampler2D hmap; // Add hmap uniform
@@ -184,7 +174,7 @@ function App() {
           }
         `;
       }
-    });    
+    });
 
     // const materialPlane = new THREE.MeshPhongMaterial({ color: 0x2288ff, shininess: 100 })
     // materialPlane.onBeforeCompile = (shader) => {
@@ -306,18 +296,6 @@ function App() {
       ripple.addDrop(x, y, 0.05, -0.04);
 
       // Update the time uniform value
-      if (materialPlane != null) {
-        console.log('is null')
-        console.log(materialPlane)
-        // materialPlane.uniforms.time.value = time;
-      }
-
-      // Update the time uniform value
-      // materialPlane.uniforms.time.value += clock.getDelta();
-      // console.log(materialPlane)
-      // if (materialPlane.uniforms.time != null || materialPlane.uniforms.time != undefined) {
-      //   materialPlane.uniforms.time.value = time;
-      // }
       // if (materialPlane.uniforms.time != null || materialPlane.uniforms.time != undefined) {
       //   materialPlane.uniforms.time.value = time;
       // }
