@@ -156,9 +156,11 @@ function App() {
             float shift = sin(texel.r * 10.0);
             vec3 shiftedColor = vec3(gl_FragColor.r, gl_FragColor.g, gl_FragColor.b + shift);
 
-            // gl_FragColor = vec4(shiftedColor, 1.0);
-            vec4 debugColor = vec4(texel.r, 0.0, 0.0, 1.0);
-            gl_FragColor = debugColor;
+            // Standard coloring
+            gl_FragColor = vec4(shiftedColor, 1.0);
+            // Debug color in red
+            // vec4 debugColor = vec4(texel.r, 0.0, 0.0, 1.0);
+            // gl_FragColor = debugColor;
           }
         `;
       }
