@@ -37,6 +37,7 @@ function App() {
   let should_draw_lines = false
   // The mesh itself
   let thePlane = null
+  let matShader = null
 
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -121,34 +122,54 @@ function App() {
         shader.vertexShader = `
           uniform sampler2D hmap;
           varying vec2 vUv;
-          
+
           void main() {
             vec4 texel = texture2D(hmap, vUv);
-            
+
             float displacement = 0.5;
             vec3 displacedPosition = position + normal * displacement * texel.r;
-            
+            displacedPosition.g += texel.g;
+
             gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
-            
+
             vUv = uv;
           }
         `;
-        
+
         shader.fragmentShader = `
           uniform sampler2D hmap;
           varying vec2 vUv;
-          
+
           void main() {
             vec4 texel = texture2D(hmap, vUv);
-            
+
             float shift = sin(texel.r * 10.0);
             vec3 shiftedColor = vec3(gl_FragColor.r, gl_FragColor.g, gl_FragColor.b + shift);
-            
+
             gl_FragColor = vec4(shiftedColor, 1.0);
           }
         `;
       }
     });
+
+    // const materialPlane = new THREE.MeshPhongMaterial({ color: 0x2288ff, shininess: 100 })
+    // materialPlane.onBeforeCompile = (shader) => {
+    //   shader.uniforms.time = { value: 0 }
+    //   shader.vertexShader = `
+    //     uniform float time;
+    // ` + shader.vertexShader
+
+    //   const token = '#include <begin_vertex>'
+    //   const customTransform = `
+    //     vec3 transformed = vec3(position);
+    //     float freq = 3.0;
+    //     float amp = 0.1;
+    //     float angle = (time + position.x)*freq;
+    //     transformed.z += sin(angle)*amp;
+    // `
+    //   shader.vertexShader = shader.vertexShader.replace(token, customTransform)
+    //   matShader = shader
+    // }
 
     thePlane = new THREE.Mesh(geometry, materialPlane);
     scene.add(thePlane);
@@ -249,6 +270,11 @@ function App() {
       const x = Math.cos(time) * 0.2;
       const y = Math.sin(time) * 0.2;
       ripple.addDrop(x, y, 0.05, -0.04);
+      
+      // if(matShader) {
+      //   matShader.uniforms.time.value = time * 1000;
+      //   console.log(matShader)
+      // }
     }
 
     ripple.update();
