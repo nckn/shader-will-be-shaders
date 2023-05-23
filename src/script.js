@@ -17,6 +17,8 @@ import './assets/scss/index.scss'
 // Longpress
 // import LongPress from '../static/js/LongPress.js'
 
+let scene, matDrop;
+
 function App() {
   const conf = {
     el: 'canvas',
@@ -102,6 +104,17 @@ function App() {
     let pointLight1 = new THREE.PointLight(0xFFFF80);
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
+
+    // Make a plane
+    const geometry = new THREE.PlaneBufferGeometry(wWidth, wWidth);
+    // Make a sphere
+    // const geometry = new THREE.SphereBufferGeometry(wWidth, wWidth, wWidth);
+
+    // Add new mesh
+    scene.add(new THREE.Mesh(
+      // geometry, this.dropMat)
+      geometry, matDrop)
+    )
 
     let pointLight2 = new THREE.PointLight(0xde3578);
     pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
@@ -333,6 +346,8 @@ const RippleEffect = (function () {
         }
       `,
     });
+
+    matDrop = this.dropMat
   };
 
   RippleEffect.prototype.update = function () {
