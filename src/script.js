@@ -181,8 +181,8 @@ function App() {
             // gl_FragColor = vec4(rgb, 1.0);
             // gl_FragColor = vec4(vec3(hue * 0.1, 1.0, 1.0), 1.0);
             
-            float shift = sin(texel.r * 10.0);
-            vec3 shiftedColor = vec3(gl_FragColor.r, gl_FragColor.g, gl_FragColor.b + shift);
+            float shift = sin(texel.r * (10.0 * cos(time * 0.000001)));
+            vec3 shiftedColor = vec3(gl_FragColor.r, gl_FragColor.g - shift, gl_FragColor.b + shift);
 
             // Standard coloring
             gl_FragColor = vec4(shiftedColor, 1.0);
