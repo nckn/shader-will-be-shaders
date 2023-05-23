@@ -18,6 +18,14 @@ import './assets/scss/index.scss'
 // import LongPress from '../static/js/LongPress.js'
 
 let scene, matDrop;
+let materialPlane = null
+let theShader = {
+  uniforms: {
+    time: {
+      value: 0
+    }
+  }
+}
 
 function App() {
   const conf = {
@@ -38,7 +46,6 @@ function App() {
   // The mesh itself
   let thePlane = null
   let matShader = null
-  let materialPlane = null
 
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -164,15 +171,24 @@ function App() {
             vec4 texel = texture2D(hmap, vUv);
     
             // Calculate hue based on time
-            float hue = fract(time * 0.1); // Adjust the factor as needed
+            // float hue = fract(time * 0.1); // Adjust the factor as needed
+            float hue = clamp(cos(time * 0.1), 0.0, 1.0); // Adjust the factor as needed
     
             // Convert hue to RGB
             vec3 rgb = hsv2rgb(vec3(hue, 1.0, 1.0));
     
             // Apply the new color
-            gl_FragColor = vec4(rgb, 1.0);
+            // gl_FragColor = vec4(rgb, 1.0);
+            // gl_FragColor = vec4(vec3(hue * 0.1, 1.0, 1.0), 1.0);
+            
+            float shift = sin(texel.r * 10.0);
+            vec3 shiftedColor = vec3(gl_FragColor.r, gl_FragColor.g, gl_FragColor.b + shift);
+
+            // Standard coloring
+            gl_FragColor = vec4(shiftedColor, 1.0);
           }
         `;
+        theShader = shader
       }
     });
 
@@ -296,6 +312,11 @@ function App() {
       ripple.addDrop(x, y, 0.05, -0.04);
 
       // Update the time uniform value
+      // console.log(materialPlane)
+      if (theShader.uniforms.time != null || theShader.uniforms.time != undefined) {
+        theShader.uniforms.time.value = time;
+        console.log(time)
+      }
       // if (materialPlane.uniforms.time != null || materialPlane.uniforms.time != undefined) {
       //   materialPlane.uniforms.time.value = time;
       // }
