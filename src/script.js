@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+import FresnelShader from './FresnelShader'
 // import ASScroll from '@ashthornton/asscroll'
 // import GSAP from 'gsap'
 // import { map } from '../static/js/math'
@@ -54,6 +55,9 @@ function App() {
   let mouseOver = false;
 
   init();
+
+  let refractSphereCamera = null
+  let fresnelSphere = null
 
   function init() {
 
@@ -214,6 +218,10 @@ function App() {
 
     thePlane = new THREE.Mesh(geometry, materialPlane);
     scene.add(thePlane);
+
+    // addSphere()
+    // console.log(FresnelShader)
+
     // const geometry = new THREE.PlaneBufferGeometry(wWidth, wHeight);
     // // Make a sphere
     // // const geometry = new THREE.SphereBufferGeometry(wWidth, wWidth, wWidth);
@@ -303,6 +311,35 @@ function App() {
     cameraCtrl.enableDamping = true;
     cameraCtrl.dampingFactor = 0.1;
     cameraCtrl.rotateSpeed = 0.5;
+  }
+
+  function addSphere() {
+    refractSphereCamera = new THREE.CubeCamera(0.1, 5000, new THREE.WebGLCubeRenderTarget(512));
+    scene.add(refractSphereCamera);
+
+    var fShader = FresnelShader;
+
+    var fresnelUniforms = {
+      "mRefractionRatio": { value: 1.02 },
+      "mFresnelBias": { value: 0.1 },
+      "mFresnelPower": { value: 2.0 },
+      "mFresnelScale": { value: 1.0 },
+      "tCube": { value: refractSphereCamera.renderTarget.texture }
+    };
+
+    // create custom material for the shader
+    var customMaterial = new THREE.ShaderMaterial({
+      uniforms: fresnelUniforms,
+      vertexShader: fShader.vertexShader,
+      fragmentShader: fShader.fragmentShader
+    });
+
+    var sphereGeometry = new THREE.SphereGeometry(100, 64, 32);
+    fresnelSphere = new THREE.Mesh(sphereGeometry, customMaterial);
+    fresnelSphere.position.set(0, 50, 100);
+    scene.add(fresnelSphere);
+
+    refractSphereCamera.position.copy(fresnelSphere.position);
   }
 
   function animate() {
