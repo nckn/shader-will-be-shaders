@@ -185,8 +185,8 @@ function App() {
             // gl_FragColor = vec4(rgb, 1.0);
             // gl_FragColor = vec4(vec3(hue * 0.1, 1.0, 1.0), 1.0);
             
-            float shift = sin(texel.r * (10.0 * cos(time * 0.0001)));
-            float shift2 = sin(texel.r * (10.0 * sin(time * 0.01)));
+            float shift = sin(texel.r * (cos(time * 1.0)));
+            float shift2 = sin(texel.r * (sin(time * 1.0)));
             vec3 shiftedColor = vec3((gl_FragColor.r + shift2), gl_FragColor.g - shift, gl_FragColor.b + shift);
 
             // Standard coloring
@@ -342,6 +342,24 @@ function App() {
     refractSphereCamera.position.copy(fresnelSphere.position);
   }
 
+  function remap(value, inputMin, inputMax, outputMin, outputMax) {
+    // Check for division by zero
+    if (inputMin === inputMax) {
+      throw new Error("Input range min and max should be different");
+    }
+    
+    // Clamp the value within the input range
+    const clampedValue = Math.max(Math.min(value, inputMax), inputMin);
+    
+    // Calculate the normalized value within the input range
+    const normalizedValue = (clampedValue - inputMin) / (inputMax - inputMin);
+    
+    // Map the normalized value to the output range
+    const mappedValue = normalizedValue * (outputMax - outputMin) + outputMin;
+    
+    return mappedValue;
+  }
+
   function animate() {
     if (!mouseOver) {
       const time = Date.now() * 0.001;
@@ -349,11 +367,16 @@ function App() {
       const y = Math.sin(time) * 0.2;
       ripple.addDrop(x, y, 0.05, -0.04);
 
+      // const convertedTime = time * 0.00000001
+      const convertedTime = remap(x, -0.2, 0.2, 0, 1)
+      // console.log(convertedTime)
+
       // Update the time uniform value
       // console.log(materialPlane)
       if (theShader.uniforms.time != null || theShader.uniforms.time != undefined) {
-        theShader.uniforms.time.value = time;
-        console.log(time)
+        // theShader.uniforms.time.value = time;
+        theShader.uniforms.time.value = convertedTime;
+        // console.log(time)
       }
       // if (materialPlane.uniforms.time != null || materialPlane.uniforms.time != undefined) {
       //   materialPlane.uniforms.time.value = time;
