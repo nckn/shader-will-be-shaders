@@ -128,19 +128,26 @@ function App() {
     console.log(positions);
     // Verify UV coordinates
     const uvs = geometry.getAttribute('uv');
-    console.log(uvs);
+    // console.log('renderer.domElement.width');
+    // console.log(renderer.domElement.width);
+    // materialPlane = new THREE.MeshPhongMaterial({
     materialPlane = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       side: THREE.DoubleSide,
       metalness: 0.5,
       roughness: 0.5,
+      emissive: new THREE.Color(0x0000ff).multiplyScalar(0.05),
+      // shininess: 300,
       // wireframe: true,
       onBeforeCompile: shader => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
+        shader.uniforms.cursorPosition = { value: new THREE.Vector2(0,0) };
+        shader.uniforms.resolution = new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
         shader.vertexShader = `
           uniform sampler2D hmap;
           varying vec2 vUv;
+          uniform vec2 resolution; // Add resolution uniform
 
           void main() {
             vec3 displacedPosition = position;
@@ -163,6 +170,8 @@ function App() {
           uniform float time; // Add time uniform
           uniform sampler2D hmap; // Add hmap uniform
           varying vec2 vUv;
+          uniform vec2 cursorPosition; // Add cursorPosition uniform
+          uniform vec2 resolution; // Add resolution uniform
     
           // Function to convert HSV to RGB
           vec3 hsv2rgb(vec3 c) {
@@ -172,6 +181,16 @@ function App() {
           }
     
           void main() {
+            // Calculate the distance from the cursor position
+            vec2 normalizedCoords = gl_FragCoord.xy / resolution.xy;
+            float distanceFromCursor = distance(normalizedCoords, cursorPosition);
+
+            // Map the distance to a displacement factor
+            float displacementFactor = smoothstep(0.0, 0.1, distanceFromCursor); // Adjust the threshold as needed
+
+            // Apply the displacement factor to the fragment color or any other calculations
+            vec3 dColor = vec3(displacementFactor); // Example: Set the color based on the displacement factor
+
             vec4 texel = texture2D(hmap, vUv);
     
             // Calculate hue based on time
@@ -190,7 +209,7 @@ function App() {
             vec3 shiftedColor = vec3((gl_FragColor.r + shift2), gl_FragColor.g - shift, gl_FragColor.b + shift);
 
             // Standard coloring
-            gl_FragColor = vec4(shiftedColor, 1.0);
+            gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b + distanceFromCursor, 1.0);
           }
         `;
         theShader = shader
@@ -228,6 +247,10 @@ function App() {
     // thePlane = new THREE.Mesh(geometry, matDrop)
     // // Add new mesh
     // scene.add( thePlane )
+    let light = new THREE.DirectionalLight(0xffffff, 0.25);
+    light.position.setScalar(1);
+    let light2 = new THREE.HemisphereLight(0xffff00, 0x0000ff, 0.375);
+    scene.add(light, light2, new THREE.AmbientLight(0xffffff, 0.5));
 
     let pointLight2 = new THREE.PointLight(0xde3578);
     pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
