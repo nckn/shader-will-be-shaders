@@ -122,6 +122,7 @@ function App() {
     scene.add(pointLight1);
 
     // Make a plane
+    // const geometry = new THREE.SphereGeometry(wWidth, 100, 100)
     const geometry = new THREE.PlaneBufferGeometry(wWidth, wHeight, 100, 100);
     // Verify vertex positions
     const positions = geometry.getAttribute('position');
@@ -142,12 +143,14 @@ function App() {
       onBeforeCompile: shader => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
+        shader.uniforms.time.u_tex = { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") }
         shader.uniforms.cursorPosition = { value: new THREE.Vector2(0,0) };
         shader.uniforms.resolution = new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
         shader.vertexShader = `
           uniform sampler2D hmap;
           varying vec2 vUv;
           uniform vec2 resolution; // Add resolution uniform
+          varying vec3 vPosition;
 
           void main() {
             vec3 displacedPosition = position;
@@ -169,9 +172,11 @@ function App() {
         shader.fragmentShader = `
           uniform float time; // Add time uniform
           uniform sampler2D hmap; // Add hmap uniform
-          varying vec2 vUv;
           uniform vec2 cursorPosition; // Add cursorPosition uniform
           uniform vec2 resolution; // Add resolution uniform
+          varying vec2 vUv;
+          varying vec3 vPosition;
+          uniform sampler2D u_tex;
     
           // Function to convert HSV to RGB
           vec3 hsv2rgb(vec3 c) {
@@ -209,7 +214,9 @@ function App() {
             vec3 shiftedColor = vec3((gl_FragColor.r + shift2), gl_FragColor.g - shift, gl_FragColor.b + shift);
 
             // Standard coloring
-            gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b + distanceFromCursor, 1.0);
+            vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
+            // gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
+            gl_FragColor = vec4(tColor.b, shiftedColor.g, shiftedColor.b, 1.0);
           }
         `;
         theShader = shader
