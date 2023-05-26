@@ -143,7 +143,7 @@ function App() {
       onBeforeCompile: shader => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
-        shader.uniforms.time.u_tex = { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") }
+        shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") }
         shader.uniforms.cursorPosition = { value: new THREE.Vector2(0,0) };
         shader.uniforms.resolution = new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
         shader.vertexShader = `
@@ -215,10 +215,11 @@ function App() {
 
             // Standard coloring
             // vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
-            vec3 tColor = texture2D(u_tex, shiftedColor.gb).rgb;
+            vec3 tColor = texture2D(u_tex, vUv).rgb;
             // gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
-            // gl_FragColor = vec4(tColor.b, shiftedColor.g, shiftedColor.b, 1.0);
-            gl_FragColor = vec4(tColor.rgb, 1.0);
+            // gl_FragColor = vec4(tColor.r + 0.5, tColor.g + 0.5, tColor.b + 0.5, shiftedColor.r);
+            
+            gl_FragColor = vec4(tColor.b, shiftedColor.g, shiftedColor.b, 1.0);
           }
         `;
         theShader = shader
