@@ -214,9 +214,11 @@ function App() {
             vec3 shiftedColor = vec3((gl_FragColor.r + shift2), gl_FragColor.g - shift, gl_FragColor.b + shift);
 
             // Standard coloring
-            vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
+            // vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
+            vec3 tColor = texture2D(u_tex, shiftedColor.gb).rgb;
             // gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
-            gl_FragColor = vec4(tColor.b, shiftedColor.g, shiftedColor.b, 1.0);
+            // gl_FragColor = vec4(tColor.b, shiftedColor.g, shiftedColor.b, 1.0);
+            gl_FragColor = vec4(tColor.rgb, 1.0);
           }
         `;
         theShader = shader
