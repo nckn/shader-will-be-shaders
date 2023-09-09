@@ -219,7 +219,7 @@ function App() {
             // gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
             // gl_FragColor = vec4(tColor.r + 0.5, tColor.g + 0.5, tColor.b + 0.5, shiftedColor.r);
             
-            gl_FragColor = vec4(tColor.b, shiftedColor.g, shiftedColor.b, 1.0);
+            gl_FragColor = vec4(tColor.b + shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
           }
         `;
         theShader = shader
