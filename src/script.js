@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import Lenis from '@studio-freight/lenis'
 
 import FresnelShader from './FresnelShader'
 // import ASScroll from '@ashthornton/asscroll'
@@ -75,7 +76,21 @@ function App() {
     // camera.position.z = conf.cameraZ;
     // camera.lookAt(new THREE.Vector3(0,1,0))
 
+    const lenis = new Lenis()
+
+    lenis.on('scroll', (e) => {
+      console.log(e)
+    })
+
+    function raf(time) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
     updateSize();
+
     window.addEventListener('resize', updateSize, false);
 
     // gridWHeight = wHeight - 20;
