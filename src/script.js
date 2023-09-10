@@ -87,6 +87,18 @@ function App() {
       requestAnimationFrame(raf)
     }
 
+    const htmlElement = document.getElementById('master-wrapper');
+    htmlElement.addEventListener('mousemove', function(event) {
+      // Manually trigger mousemove event on Three.js canvas
+      const canvas = document.getElementById('canvas');
+      const newEvent = new MouseEvent('mousemove', {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          // other properties here...
+      });
+      canvas.dispatchEvent(newEvent);
+    });
+
     requestAnimationFrame(raf)
 
     updateSize();
