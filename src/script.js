@@ -170,6 +170,9 @@ function App() {
       onBeforeCompile: shader => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
+        
+        shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("img/frame-1.jpg") }
+
         // shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") }
         shader.uniforms.cursorPosition = { value: new THREE.Vector2(0,0) };
         shader.uniforms.resolution = new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
