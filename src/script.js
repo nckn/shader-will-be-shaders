@@ -171,7 +171,7 @@ function App() {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
         
-        shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("img/frame-1.jpg") }
+        shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("img/frame-1-4x.jpg") }
 
         // shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") }
         shader.uniforms.cursorPosition = { value: new THREE.Vector2(0,0) };
@@ -246,10 +246,7 @@ function App() {
             // Standard coloring
             // vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
             vec3 tColor = texture2D(u_tex, vUv).rgb;
-            // gl_FragColor = vec4(shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
-            // gl_FragColor = vec4(tColor.r + 0.5, tColor.g + 0.5, tColor.b + 0.5, shiftedColor.r);
-            
-            gl_FragColor = vec4(tColor.b + shiftedColor.r, shiftedColor.g, shiftedColor.b, 1.0);
+            gl_FragColor = vec4(tColor.b + shiftedColor.b, shiftedColor.g, shiftedColor.b, 1.0);
           }
         `;
         theShader = shader
@@ -289,20 +286,21 @@ function App() {
     // scene.add( thePlane )
     let light = new THREE.DirectionalLight(0xffffff, 0.25);
     light.position.setScalar(1);
-    let light2 = new THREE.HemisphereLight(0xffff00, 0x0000ff, 0.375);
+    // let light2 = new THREE.HemisphereLight(0xffff00, 0x0000ff, 0.375);
+    let light2 = new THREE.HemisphereLight(0xffffff, 0xfffff, 0.375);
     scene.add(light, light2, new THREE.AmbientLight(0xffffff, 0.5));
 
     let pointLight2 = new THREE.PointLight(0xde3578);
     pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
-    scene.add(pointLight2);
+    // scene.add(pointLight2);
 
     let pointLight3 = new THREE.PointLight(0xFF4040);
     pointLight3.position.set(-wWidth / 2, -wHeight / 2, 50);
-    scene.add(pointLight3);
+    // scene.add(pointLight3);
 
     let pointLight4 = new THREE.PointLight(0x0247e5);
     pointLight4.position.set(wWidth / 2, -wHeight / 2, 50);
-    scene.add(pointLight4);
+    // scene.add(pointLight4);
 
     renderer.domElement.addEventListener('mouseup', e => {
       pointLight1.color = new THREE.Color(chroma.random().hex());

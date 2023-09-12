@@ -64,9 +64,12 @@ body {
 
 .title {
   // color: #000;
-  color: #f00;
-  font-size: 14rem;
+  // color: #f00;
+  color: #fff;
+  font-weight: 900;
+  font-size: 50rem;
   max-width: 900px;
+  text-transform: uppercase;
 }
 
 .section {
@@ -79,6 +82,9 @@ body {
   box-sizing: border-box;
 
   @include center();
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 3rem;
 
   mix-blend-mode: difference;
   // top: 100vh;
