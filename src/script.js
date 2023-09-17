@@ -1,16 +1,16 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import Lenis from '@studio-freight/lenis'
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import Lenis from "@studio-freight/lenis";
 
-import { mapValue } from '../static/js/helpers.js'
+import { mapValue } from "../static/js/helpers.js";
 
-import FresnelShader from './FresnelShader'
+import FresnelShader from "./FresnelShader";
 // import ASScroll from '@ashthornton/asscroll'
 // import GSAP from 'gsap'
 // import { map } from '../static/js/math'
 // import { split } from '../static/js/text'
 
-import './assets/scss/index.scss'
+import "./assets/scss/index.scss";
 
 // Misc helper functions
 // import {
@@ -22,18 +22,18 @@ import './assets/scss/index.scss'
 // import LongPress from '../static/js/LongPress.js'
 
 let scene, matDrop;
-let materialPlane = null
+let materialPlane = null;
 let theShader = {
   uniforms: {
     time: {
-      value: 0
-    }
-  }
-}
+      value: 0,
+    },
+  },
+};
 
 function App() {
   const conf = {
-    el: 'canvas',
+    el: "canvas",
     fov: 75,
     cameraZ: 100,
   };
@@ -48,11 +48,14 @@ function App() {
   let gridWWidth, gridWHeight;
   let gridWidth, gridHeight;
 
+  let lastScrollPosition = 0;
+  let lastTime = 0;
+
   // Should we show the grid lines or not?
-  let should_draw_lines = false
+  let should_draw_lines = false;
   // The mesh itself
-  let thePlane = null
-  let matShader = null
+  let thePlane = null;
+  let matShader = null;
 
   const mouse = new THREE.Vector2();
   const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -62,12 +65,11 @@ function App() {
 
   init();
 
-  let refractSphereCamera = null
-  let fresnelSphere = null
+  let refractSphereCamera = null;
+  let fresnelSphere = null;
 
   function init() {
-
-    console.log('initing alright')
+    console.log("initing alright");
     // const gl = renderer.getContext();
     // const floatTextures = gl.getExtension('OES_texture_float');
     // if (!floatTextures) {
@@ -75,50 +77,53 @@ function App() {
     //   return;
     // }
 
-    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById(conf.el), antialias: true });
+    renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById(conf.el),
+      antialias: true,
+    });
     camera = new THREE.PerspectiveCamera(conf.fov);
     camera.position.x = 20;
     // camera.position.z = conf.cameraZ;
     // camera.lookAt(new THREE.Vector3(0,1,0))
 
-    const lenis = new Lenis()
+    const lenis = new Lenis();
 
-    lenis.on('scroll', (e) => {
+    lenis.on("scroll", (e) => {
       // console.log(e)
 
-      onscroll(e)
+      onscroll(e);
       // onscroll(e.targetScroll)
-    })
+    });
 
     function raf(time) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     }
 
-    const htmlElement = document.getElementById('master-wrapper');
-    htmlElement.addEventListener('mousemove', function(event) {
+    const htmlElement = document.getElementById("master-wrapper");
+    htmlElement.addEventListener("mousemove", function (event) {
       // Manually trigger mousemove event on Three.js canvas
-      const canvas = document.getElementById('canvas');
-      const newEvent = new MouseEvent('mousemove', {
-          clientX: event.clientX,
-          clientY: event.clientY,
-          // other properties here...
+      const canvas = document.getElementById("canvas");
+      const newEvent = new MouseEvent("mousemove", {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        // other properties here...
       });
       canvas.dispatchEvent(newEvent);
     });
 
-    requestAnimationFrame(raf)
+    requestAnimationFrame(raf);
 
     updateSize();
 
-    window.addEventListener('resize', updateSize, false);
+    window.addEventListener("resize", updateSize, false);
 
     // gridWHeight = wHeight - 20;
     // gridWWidth = gridWHeight;
     gridWHeight = wHeight;
     gridWWidth = wWidth;
-    gridWidth = gridWWidth * width / wWidth;
-    gridHeight = gridWHeight * height / wHeight;
+    gridWidth = (gridWWidth * width) / wWidth;
+    gridHeight = (gridWHeight * height) / wHeight;
 
     ripple = new RippleEffect(renderer, width, height);
 
@@ -126,19 +131,24 @@ function App() {
       const v = new THREE.Vector3();
       camera.getWorldDirection(v);
       v.normalize();
-      mouse.x = ((e.clientX / width) * 2 - 1);
-      mouse.y = (-(e.clientY / height) * 2 + 1);
+      mouse.x = (e.clientX / width) * 2 - 1;
+      mouse.y = -(e.clientY / height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       raycaster.ray.intersectPlane(mousePlane, mousePosition);
-      return { x: 2 * mousePosition.x / gridWWidth, y: 2 * mousePosition.y / gridWHeight };
+      return {
+        x: (2 * mousePosition.x) / gridWWidth,
+        y: (2 * mousePosition.y) / gridWHeight,
+      };
     };
 
-    renderer.domElement.addEventListener('mousemove', e => {
+    renderer.domElement.addEventListener("mousemove", (e) => {
       mouseOver = true;
       const gp = getGridMP(e);
       ripple.addDrop(gp.x, gp.y, 0.05, 0.1);
     });
-    renderer.domElement.addEventListener('mouseleave', e => { mouseOver = false; });
+    renderer.domElement.addEventListener("mouseleave", (e) => {
+      mouseOver = false;
+    });
 
     // renderer.domElement.addEventListener('mouseup', e => {
     //   const gp = getGridMP(e);
@@ -150,28 +160,44 @@ function App() {
   }
 
   function onscroll(e) {
-    // console.log(e)
-    console.log(e.targetScroll)
-    // console.log(totalScrollHeight)
-    // return
+    // Current time in milliseconds
+    let currentTime = new Date().getTime();
+
+    // Current scroll position
     let scrollPosition = parseFloat(e.targetScroll);
-    // let scrollPosition = window.scrollY;
-    
-    // Calculate weight dynamically
-    // let weight = 100 + scrollPosition * 0.1;
-    // if (weight > 900) weight = 900;
+
+    // Time difference between now and the last time the event fired
+    let timeDifference = currentTime - lastTime;
+
+    // Difference in scroll position
+    let scrollDifference = scrollPosition - lastScrollPosition;
+
+    // Calculate velocity = Δscroll / Δtime
+    // Multiply by 1000 to convert it to pixels per second
+    let velocity = (scrollDifference / timeDifference) * 1000;
+
+    // Map the value of scrollPosition to a new range for font weight
     const mappedValue = mapValue(scrollPosition, 0, totalScrollHeight, 0, 1000);
+    const mappedValueSlant = mapValue(scrollPosition, 0, totalScrollHeight / 2, -10, 0);
 
     // Update font weight
-    // document.body.style.fontWeight = mappedValue;
-    // document.body.style.setProperty('--font-weight', weight);
-    document.body.style.setProperty('--font-weight', mappedValue);
+    document.body.style.setProperty("--font-weight", mappedValue);
+    
+    // Update font slant
+    document.body.style.setProperty("--text-slant", mappedValueSlant);
+
+    // Update lastScrollPosition and lastTime for the next event
+    lastScrollPosition = scrollPosition;
+    lastTime = currentTime;
+
+    // console.log(`Velocity: ${velocity} pixels/sec`);
+    console.log(Math.abs(velocity));
   }
 
   function initScene() {
     scene = new THREE.Scene();
 
-    let pointLight1 = new THREE.PointLight(0xFFFF80);
+    let pointLight1 = new THREE.PointLight(0xffff80);
     pointLight1.position.set(-wWidth / 2, wHeight / 2, 50);
     scene.add(pointLight1);
 
@@ -179,10 +205,10 @@ function App() {
     // const geometry = new THREE.SphereGeometry(wWidth, 100, 100)
     const geometry = new THREE.PlaneBufferGeometry(wWidth, wHeight, 100, 100);
     // Verify vertex positions
-    const positions = geometry.getAttribute('position');
+    const positions = geometry.getAttribute("position");
     console.log(positions);
     // Verify UV coordinates
-    const uvs = geometry.getAttribute('uv');
+    const uvs = geometry.getAttribute("uv");
     // console.log('renderer.domElement.width');
     // console.log(renderer.domElement.width);
     // materialPlane = new THREE.MeshPhongMaterial({
@@ -194,15 +220,20 @@ function App() {
       emissive: new THREE.Color(0x0000ff).multiplyScalar(0.05),
       // shininess: 300,
       // wireframe: true,
-      onBeforeCompile: shader => {
+      onBeforeCompile: (shader) => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.uniforms.time = { value: 0 };
-        
-        shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("img/frame-1-4x.jpg") }
+
+        shader.uniforms.u_tex = {
+          value: new THREE.TextureLoader().load("img/frame-1-4x.jpg"),
+        };
 
         // shader.uniforms.u_tex = { value: new THREE.TextureLoader().load("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/sa1.jpg") }
-        shader.uniforms.cursorPosition = { value: new THREE.Vector2(0,0) };
-        shader.uniforms.resolution = new THREE.Vector2(renderer.domElement.width, renderer.domElement.height)
+        shader.uniforms.cursorPosition = { value: new THREE.Vector2(0, 0) };
+        shader.uniforms.resolution = new THREE.Vector2(
+          renderer.domElement.width,
+          renderer.domElement.height
+        );
         shader.vertexShader = `
           uniform sampler2D hmap;
           varying vec2 vUv;
@@ -274,11 +305,11 @@ function App() {
             // Standard coloring
             // vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
             vec3 tColor = texture2D(u_tex, vUv).rgb;
-            gl_FragColor = vec4(tColor.r *= shiftedColor.r, tColor.g *= shiftedColor.g, tColor.b *= shiftedColor.b, 1.0);
+            gl_FragColor = vec4(tColor.r *= shiftedColor.r, tColor.g /= shiftedColor.g, tColor.b /= shiftedColor.b, 1.0);
           }
         `;
-        theShader = shader
-      }
+        theShader = shader;
+      },
     });
 
     // const materialPlane = new THREE.MeshPhongMaterial({ color: 0x2288ff, shininess: 100 })
@@ -322,7 +353,7 @@ function App() {
     pointLight2.position.set(wWidth / 2, wHeight / 2, 50);
     // scene.add(pointLight2);
 
-    let pointLight3 = new THREE.PointLight(0xFF4040);
+    let pointLight3 = new THREE.PointLight(0xff4040);
     pointLight3.position.set(-wWidth / 2, -wHeight / 2, 50);
     // scene.add(pointLight3);
 
@@ -330,7 +361,7 @@ function App() {
     pointLight4.position.set(wWidth / 2, -wHeight / 2, 50);
     // scene.add(pointLight4);
 
-    renderer.domElement.addEventListener('mouseup', e => {
+    renderer.domElement.addEventListener("mouseup", (e) => {
       pointLight1.color = new THREE.Color(chroma.random().hex());
       pointLight2.color = new THREE.Color(chroma.random().hex());
       pointLight3.color = new THREE.Color(chroma.random().hex());
@@ -338,34 +369,46 @@ function App() {
     });
 
     const material = new THREE.MeshStandardMaterial({
-      color: 0xffffff, side: THREE.DoubleSide, metalness: 0.5, roughness: 0.5, onBeforeCompile: shader => {
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+      metalness: 0.5,
+      roughness: 0.5,
+      onBeforeCompile: (shader) => {
         shader.uniforms.hmap = { value: ripple.hMap.texture };
         shader.vertexShader = "uniform sampler2D hmap;\n" + shader.vertexShader;
-        const token = '#include <begin_vertex>';
+        const token = "#include <begin_vertex>";
         const customTransform = `
         vec3 transformed = vec3(position);
         vec4 info = texture2D(hmap, uv);
         vNormal = vec3(info.b, sqrt(1.0 - dot(info.ba, info.ba)), info.a).xzy;
         transformed.z = 20. * info.r;
       `;
-        shader.vertexShader = shader.vertexShader.replace(token, customTransform);
-      }
+        shader.vertexShader = shader.vertexShader.replace(
+          token,
+          customTransform
+        );
+      },
     });
 
-    let nx = Math.round(gridWidth / 2), ny = Math.round(gridHeight / 20);
-    let dx = gridWWidth / nx, dy = gridWHeight / ny;
+    let nx = Math.round(gridWidth / 2),
+      ny = Math.round(gridHeight / 20);
+    let dx = gridWWidth / nx,
+      dy = gridWHeight / ny;
     for (let j = 0; j <= ny; j++) {
       const geometry = new THREE.BufferGeometry();
-      const positions = [], uvs = [];
-      const y = - gridWHeight / 2 + j * dy;
+      const positions = [],
+        uvs = [];
+      const y = -gridWHeight / 2 + j * dy;
       for (let i = 0; i <= nx; i++) {
-        positions.push(- gridWWidth / 2 + i * dx, y, 0);
+        positions.push(-gridWWidth / 2 + i * dx, y, 0);
         uvs.push(i / nx, j / ny);
       }
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+      );
+      geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
       geometry.computeBoundingSphere();
-
 
       // Draw lines on x axis
       if (should_draw_lines) {
@@ -373,18 +416,24 @@ function App() {
       }
     }
 
-    nx = Math.round(gridWidth / 20); ny = Math.round(gridHeight / 2);
-    dx = gridWWidth / nx; dy = gridWHeight / ny;
+    nx = Math.round(gridWidth / 20);
+    ny = Math.round(gridHeight / 2);
+    dx = gridWWidth / nx;
+    dy = gridWHeight / ny;
     for (let i = 0; i <= nx; i++) {
       const geometry = new THREE.BufferGeometry();
-      const positions = [], uvs = [];
-      const x = - gridWWidth / 2 + i * dx;
+      const positions = [],
+        uvs = [];
+      const x = -gridWWidth / 2 + i * dx;
       for (let j = 0; j <= ny; j++) {
-        positions.push(x, - gridWHeight / 2 + j * dy, 0);
+        positions.push(x, -gridWHeight / 2 + j * dy, 0);
         uvs.push(i / nx, j / ny);
       }
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+      );
+      geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
       geometry.computeBoundingSphere();
 
       // Draw lines on y axis
@@ -403,24 +452,28 @@ function App() {
   }
 
   function addSphere() {
-    refractSphereCamera = new THREE.CubeCamera(0.1, 5000, new THREE.WebGLCubeRenderTarget(512));
+    refractSphereCamera = new THREE.CubeCamera(
+      0.1,
+      5000,
+      new THREE.WebGLCubeRenderTarget(512)
+    );
     scene.add(refractSphereCamera);
 
     var fShader = FresnelShader;
 
     var fresnelUniforms = {
-      "mRefractionRatio": { value: 1.02 },
-      "mFresnelBias": { value: 0.1 },
-      "mFresnelPower": { value: 2.0 },
-      "mFresnelScale": { value: 1.0 },
-      "tCube": { value: refractSphereCamera.renderTarget.texture }
+      mRefractionRatio: { value: 1.02 },
+      mFresnelBias: { value: 0.1 },
+      mFresnelPower: { value: 2.0 },
+      mFresnelScale: { value: 1.0 },
+      tCube: { value: refractSphereCamera.renderTarget.texture },
     };
 
     // create custom material for the shader
     var customMaterial = new THREE.ShaderMaterial({
       uniforms: fresnelUniforms,
       vertexShader: fShader.vertexShader,
-      fragmentShader: fShader.fragmentShader
+      fragmentShader: fShader.fragmentShader,
     });
 
     var sphereGeometry = new THREE.SphereGeometry(100, 64, 32);
@@ -436,16 +489,16 @@ function App() {
     if (inputMin === inputMax) {
       throw new Error("Input range min and max should be different");
     }
-    
+
     // Clamp the value within the input range
     const clampedValue = Math.max(Math.min(value, inputMax), inputMin);
-    
+
     // Calculate the normalized value within the input range
     const normalizedValue = (clampedValue - inputMin) / (inputMax - inputMin);
-    
+
     // Map the normalized value to the output range
     const mappedValue = normalizedValue * (outputMax - outputMin) + outputMin;
-    
+
     return mappedValue;
   }
 
@@ -457,12 +510,15 @@ function App() {
       ripple.addDrop(x, y, 0.05, -0.04);
 
       // const convertedTime = time * 0.00000001
-      const convertedTime = remap(x, -0.2, 0.2, 0, 1)
+      const convertedTime = remap(x, -0.2, 0.2, 0, 1);
       // console.log(convertedTime)
 
       // Update the time uniform value
       // console.log(materialPlane)
-      if (theShader.uniforms.time != null || theShader.uniforms.time != undefined) {
+      if (
+        theShader.uniforms.time != null ||
+        theShader.uniforms.time != undefined
+      ) {
         // theShader.uniforms.time.value = time;
         theShader.uniforms.time.value = convertedTime;
         // console.log(time)
@@ -483,15 +539,18 @@ function App() {
   }
 
   function updateSize() {
-    width = window.innerWidth; cx = width / 2;
-    height = window.innerHeight; cy = height / 2;
+    width = window.innerWidth;
+    cx = width / 2;
+    height = window.innerHeight;
+    cy = height / 2;
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     const wsize = getRendererSize();
-    wWidth = wsize[0]; wHeight = wsize[1];
+    wWidth = wsize[0];
+    wHeight = wsize[1];
 
-    console.log('on resize')
+    console.log("on resize");
   }
 
   function getRendererSize() {
@@ -511,8 +570,16 @@ const RippleEffect = (function () {
     // this.delta = new THREE.Vector2(this.width / Math.pow(width, 2), this.height / Math.pow(height, 2));
     this.delta = new THREE.Vector2(1 / this.width, 1 / this.height);
 
-    this.hMap = new THREE.WebGLRenderTarget(this.width, this.height, { type: THREE.FloatType, depthBuffer: false, stencilBuffer: false });
-    this.hMap1 = new THREE.WebGLRenderTarget(this.width, this.height, { type: THREE.FloatType, depthBuffer: false, stencilBuffer: false });
+    this.hMap = new THREE.WebGLRenderTarget(this.width, this.height, {
+      type: THREE.FloatType,
+      depthBuffer: false,
+      stencilBuffer: false,
+    });
+    this.hMap1 = new THREE.WebGLRenderTarget(this.width, this.height, {
+      type: THREE.FloatType,
+      depthBuffer: false,
+      stencilBuffer: false,
+    });
     this.fsQuad = new FullScreenQuad();
 
     this.initShaders();
@@ -529,7 +596,7 @@ const RippleEffect = (function () {
     `;
 
     this.copyMat = new THREE.ShaderMaterial({
-      uniforms: { 'tDiffuse': { value: null } },
+      uniforms: { tDiffuse: { value: null } },
       vertexShader: defaultVertexShader,
       fragmentShader: `
         uniform sampler2D tDiffuse;
@@ -542,8 +609,8 @@ const RippleEffect = (function () {
 
     this.updateMat = new THREE.ShaderMaterial({
       uniforms: {
-        'tDiffuse': { value: null },
-        'delta': new THREE.Uniform(this.delta),
+        tDiffuse: { value: null },
+        delta: new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
       fragmentShader: `
@@ -572,8 +639,8 @@ const RippleEffect = (function () {
 
     this.normalsMat = new THREE.ShaderMaterial({
       uniforms: {
-        'tDiffuse': { value: null },
-        'delta': new THREE.Uniform(this.delta),
+        tDiffuse: { value: null },
+        delta: new THREE.Uniform(this.delta),
       },
       vertexShader: defaultVertexShader,
       fragmentShader: `
@@ -592,10 +659,10 @@ const RippleEffect = (function () {
 
     this.dropMat = new THREE.ShaderMaterial({
       uniforms: {
-        'tDiffuse': { value: null },
-        'center': new THREE.Uniform(new THREE.Vector2()),
-        'radius': { value: 0.05 },
-        'strength': { value: 0.5 },
+        tDiffuse: { value: null },
+        center: new THREE.Uniform(new THREE.Vector2()),
+        radius: { value: 0.05 },
+        strength: { value: 0.5 },
       },
       vertexShader: defaultVertexShader,
       fragmentShader: `
@@ -616,7 +683,7 @@ const RippleEffect = (function () {
       `,
     });
 
-    matDrop = this.dropMat
+    matDrop = this.dropMat;
   };
 
   RippleEffect.prototype.update = function () {
@@ -667,22 +734,26 @@ const RippleEffect = (function () {
 
   // from https://threejs.org/examples/js/postprocessing/EffectComposer.js
   const FullScreenQuad = (function () {
-    const camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const geometry = new THREE.PlaneBufferGeometry(2, 2);
 
     const FullScreenQuad = function (material) {
       this._mesh = new THREE.Mesh(geometry, material);
     };
 
-    Object.defineProperty(FullScreenQuad.prototype, 'material', {
-      get: function () { return this._mesh.material; },
-      set: function (value) { this._mesh.material = value; }
+    Object.defineProperty(FullScreenQuad.prototype, "material", {
+      get: function () {
+        return this._mesh.material;
+      },
+      set: function (value) {
+        this._mesh.material = value;
+      },
     });
 
     Object.assign(FullScreenQuad.prototype, {
       render: function (renderer) {
         renderer.render(this._mesh, camera);
-      }
+      },
     });
 
     return FullScreenQuad;

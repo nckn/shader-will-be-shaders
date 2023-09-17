@@ -4,6 +4,12 @@
   padding: 0;
 }
 
+:root {
+  // --text-weight: 500;
+  // --text-width: 100;
+  --text-slant: 0;
+}
+
 html,
 body {
   // overflow: hidden;
@@ -12,6 +18,7 @@ body {
   // font-family: "CambonRegular", serif;
   font-family: "InterVar", sans-serif;
   font-weight: var(--font-weight, 100); // Fallback to 100 if not set
+  font-variation-settings: "slnt" var(--text-slant);
 
   color: $color-white;
   
