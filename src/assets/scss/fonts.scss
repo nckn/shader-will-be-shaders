@@ -1,0 +1,9 @@
+// $font_path: '../../../static/fonts/';
+$font_path: '../../fonts/';
+
+@font-face {
+  font-family: "InterVar";
+  src: url($font_path + 'Inter-VariableFont_slnt,wght.ttf') format("truetype-variations");
+  // font-weight: normal;
+  font-style: normal;
+}

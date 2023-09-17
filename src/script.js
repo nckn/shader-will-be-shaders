@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Lenis from '@studio-freight/lenis'
 
+import { mapValue } from '../static/js/helpers.js'
+
 import FresnelShader from './FresnelShader'
 // import ASScroll from '@ashthornton/asscroll'
 // import GSAP from 'gsap'
@@ -35,6 +37,9 @@ function App() {
     fov: 75,
     cameraZ: 100,
   };
+
+  // Calculate the total scroll height
+  let totalScrollHeight = document.documentElement.scrollHeight;
 
   let renderer, scene, camera, cameraCtrl;
   let width, height, cx, cy, wWidth, wHeight;
@@ -79,7 +84,10 @@ function App() {
     const lenis = new Lenis()
 
     lenis.on('scroll', (e) => {
-      console.log(e)
+      // console.log(e)
+
+      onscroll(e)
+      // onscroll(e.targetScroll)
     })
 
     function raf(time) {
@@ -141,6 +149,25 @@ function App() {
     animate();
   }
 
+  function onscroll(e) {
+    // console.log(e)
+    console.log(e.targetScroll)
+    // console.log(totalScrollHeight)
+    // return
+    let scrollPosition = parseFloat(e.targetScroll);
+    // let scrollPosition = window.scrollY;
+    
+    // Calculate weight dynamically
+    // let weight = 100 + scrollPosition * 0.1;
+    // if (weight > 900) weight = 900;
+    const mappedValue = mapValue(scrollPosition, 0, totalScrollHeight, 0, 1000);
+
+    // Update font weight
+    // document.body.style.fontWeight = mappedValue;
+    // document.body.style.setProperty('--font-weight', weight);
+    document.body.style.setProperty('--font-weight', mappedValue);
+  }
+
   function initScene() {
     scene = new THREE.Scene();
 
@@ -188,6 +215,7 @@ function App() {
             // Retrieve the displacement value from the height map texture
             vec4 texel = texture2D(hmap, uv);
             float displacement = 10.0 * texel.r;
+            // float displacement = 10.0 * texel.g;
 
             // Apply the displacement to the vertex position
             displacedPosition += normal * displacement;
@@ -246,7 +274,7 @@ function App() {
             // Standard coloring
             // vec3 tColor = texture2D(u_tex, shiftedColor.rg).rgb;
             vec3 tColor = texture2D(u_tex, vUv).rgb;
-            gl_FragColor = vec4(tColor.b + shiftedColor.b, shiftedColor.g, shiftedColor.b, 1.0);
+            gl_FragColor = vec4(tColor.r *= shiftedColor.r, tColor.g *= shiftedColor.g, tColor.b *= shiftedColor.b, 1.0);
           }
         `;
         theShader = shader

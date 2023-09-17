@@ -29,7 +29,7 @@ $font_path: '../../fonts/';
 
 h1, h2, h3, h4, h5, h6, p {
   letter-spacing: 0.35px;
-  font-family: "Helvetica Neue", sans-serif;
+  // font-family: "Helvetica Neue", sans-serif;
   // font-family: "Misto", sans-serif;
 }
 
@@ -83,6 +83,16 @@ p {
 
 .text-bold {
   font-family: "CambonBlack", serif;
+}
+
+.title {
+  // color: #000;
+  // color: #f00;
+  color: #fff;
+  // font-weight: 900;
+  font-size: 50rem;
+  max-width: 900px;
+  text-transform: uppercase;
 }
 
 blockquote {
