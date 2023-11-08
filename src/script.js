@@ -6,9 +6,13 @@ import { mapValue } from "../static/js/helpers.js";
 
 import FresnelShader from "./FresnelShader";
 // import ASScroll from '@ashthornton/asscroll'
-// import GSAP from 'gsap'
 // import { map } from '../static/js/math'
 // import { split } from '../static/js/text'
+
+import gsap from 'gsap'
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 import "./assets/scss/index.scss";
 
@@ -30,6 +34,9 @@ let theShader = {
     },
   },
 };
+let sectionOne = null
+let sectionTwo = null
+let sectionFou = null
 
 function App() {
   const conf = {
@@ -68,6 +75,25 @@ function App() {
   let refractSphereCamera = null;
   let fresnelSphere = null;
 
+  function initScroll() {
+    sectionOne = document.getElementById("SectionOne");
+    sectionTwo = document.getElementById("SectionTwo");
+    sectionFou = document.getElementById("SectionFou");
+
+    gsap.to(sectionTwo, {xPercent: -100, ease: "sine.out", scrollTrigger: {trigger: sectionTwo, pin: true, scrub: 3 }})
+    gsap.to(sectionFou, {xPercent: -100, ease: "sine.out", scrollTrigger: {trigger: sectionFou, pin: true, scrub: 3 }})
+    
+    // gsap.to(sectionTwo, {
+    //   xPercent: -100,
+    //   ease: "sine.out",
+    //   scrollTrigger: {
+    //     trigger: sectionTwo,
+    //     pin: true,
+    //     scrub: 3
+    //   }
+    // })
+  }
+
   function init() {
     console.log("initing alright");
     // const gl = renderer.getContext();
@@ -94,6 +120,8 @@ function App() {
       onscroll(e);
       // onscroll(e.targetScroll)
     });
+
+    initScroll();
 
     function raf(time) {
       lenis.raf(time);
