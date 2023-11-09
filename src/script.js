@@ -36,7 +36,9 @@ let theShader = {
 };
 let sectionOne = null
 let sectionTwo = null
+let sectionThr = null
 let sectionFou = null
+let masterWrapper = null
 
 function App() {
   const conf = {
@@ -76,12 +78,15 @@ function App() {
   let fresnelSphere = null;
 
   function initScroll() {
+    masterWrapper = document.getElementById("master-wrapper");
     sectionOne = document.getElementById("SectionOne");
     sectionTwo = document.getElementById("SectionTwo");
+    sectionThr = document.getElementById("SectionThr");
     sectionFou = document.getElementById("SectionFou");
 
     gsap.to(sectionTwo, {xPercent: -100, ease: "sine.out", scrollTrigger: {trigger: sectionTwo, pin: true, scrub: 3 }})
-    gsap.to(sectionFou, {xPercent: -100, ease: "sine.out", scrollTrigger: {trigger: sectionFou, pin: true, scrub: 3 }})
+    gsap.to(sectionFou, {xPercent: -130, ease: "sine.out", scrollTrigger: {trigger: sectionFou, pin: true, scrub: 3 }})
+    // gsap.to(masterWrapper, {scale: 5, lineHeight: 100, ease: "sine.out", scrollTrigger: {trigger: sectionThr, pin: true, scrub: 3 }})
     
     // gsap.to(sectionTwo, {
     //   xPercent: -100,
@@ -206,7 +211,7 @@ function App() {
 
     // Map the value of scrollPosition to a new range for font weight
     const mappedValue = mapValue(scrollPosition, 0, totalScrollHeight, 0, 1000);
-    const mappedValueSlant = mapValue(scrollPosition, 0, totalScrollHeight / 2, -10, 0);
+    const mappedValueSlant = mapValue(scrollPosition, 0, totalScrollHeight / 2, 0, -50);
 
     // Update font weight
     document.body.style.setProperty("--font-weight", mappedValue);
